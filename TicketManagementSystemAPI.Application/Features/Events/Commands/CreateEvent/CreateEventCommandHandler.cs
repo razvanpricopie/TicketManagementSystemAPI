@@ -13,9 +13,9 @@ namespace TicketManagementSystemAPI.Application.Features.Events.Commands.CreateE
     public class CreateEventCommandHandler : IRequestHandler<CreateEventCommand, Guid>
     {
         private readonly IMapper _mapper;
-        private readonly IAsyncRepository<Event> _eventRepository;
+        private readonly IEventRepository _eventRepository;
 
-        public CreateEventCommandHandler(IMapper mapper, IAsyncRepository<Event> eventRepository)
+        public CreateEventCommandHandler(IMapper mapper, IEventRepository eventRepository)
         {
             _mapper = mapper;
             _eventRepository = eventRepository;
@@ -23,6 +23,12 @@ namespace TicketManagementSystemAPI.Application.Features.Events.Commands.CreateE
 
         public async Task<Guid> Handle(CreateEventCommand request, CancellationToken cancellationToken)
         {
+            var validator = new CreateEventCommandValidator(_eventRepository);
+            var validationResult = await validator.ValidateAsync(request);
+
+            if (validationResult.Errors.Count > 0)
+                throw new Exceptions.ValidationException(validationResult);
+
             var @event = _mapper.Map<Event>(request);
 
             @event = await _eventRepository.AddAsync(@event);
