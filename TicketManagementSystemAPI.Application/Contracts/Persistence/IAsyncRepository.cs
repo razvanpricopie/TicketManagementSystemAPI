@@ -9,8 +9,8 @@ namespace TicketManagementSystemAPI.Application.Contracts.Persistence
     {
         Task<T> GetByIdAsync(Guid id);
         Task<IReadOnlyList<T>> ListAllAsync();
-        Task<T> AddAsync(Guid id);
-        Task<T> UpdateAsync(Guid id);
-        Task<T> DeleteAsync(Guid id);
+        Task<T> AddAsync(T entity);
+        Task<T> UpdateAsync(T entity);
+        Task<T> DeleteAsync(T entity);
     }
 }
