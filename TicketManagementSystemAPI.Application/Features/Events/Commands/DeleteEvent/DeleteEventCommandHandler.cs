@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using TicketManagementSystemAPI.Application.Contracts.Persistence;
 using TicketManagementSystemAPI.Domain.Entities;
 
-namespace TicketManagementSystemAPI.Application.Features.Events.DeleteEvent
+namespace TicketManagementSystemAPI.Application.Features.Events.Commands.DeleteEvent
 {
     public class DeleteEventCommandHandler : IRequestHandler<DeleteEventCommand>
     {
