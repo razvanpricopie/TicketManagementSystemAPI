@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using TicketManagementSystemAPI.Application.Contracts.Persistence;
+using TicketManagementSystemAPI.Application.Features.Events.Commands.CreateEvent;
 using TicketManagementSystemAPI.Domain.Entities;
 
 namespace TicketManagementSystemAPI.Application.Features.Orders.Commands.CreateOrder
@@ -25,6 +26,12 @@ namespace TicketManagementSystemAPI.Application.Features.Orders.Commands.CreateO
 
         public async Task<Guid> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
         {
+            var validator = new CreateOrderCommandValidator();
+            var validationResult = await validator.ValidateAsync(request);
+
+            if (validationResult.Errors.Count > 0)
+                throw new Exceptions.ValidationException(validationResult);
+
             var @order = _mapper.Map<Order>(request);
 
             @order = await _orderRepository.AddAsync(@order);

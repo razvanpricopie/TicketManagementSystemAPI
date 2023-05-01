@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TicketManagementSystemAPI.Application.Contracts.Persistence;
+using TicketManagementSystemAPI.Application.Features.Events.Commands.CreateEvent;
 using TicketManagementSystemAPI.Application.Features.Events.Commands.UpdateEvent;
 using TicketManagementSystemAPI.Domain.Entities;
 
@@ -24,6 +25,12 @@ namespace TicketManagementSystemAPI.Application.Features.Categories.Commands.Upd
 
         public async Task<Unit> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
         {
+            var validator = new UpdateCategoryCommanmdValidator();
+            var validationResult = await validator.ValidateAsync(request);
+
+            if (validationResult.Errors.Count > 0)
+                throw new Exceptions.ValidationException(validationResult);
+
             Category categoryToUpdate = await _categoryRepository.GetByIdAsync(request.CategoryId);
 
             _mapper.Map(request, categoryToUpdate, typeof(UpdateEventCommand), typeof(Category));
