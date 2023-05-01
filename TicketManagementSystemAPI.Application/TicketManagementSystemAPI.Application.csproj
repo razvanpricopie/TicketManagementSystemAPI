@@ -16,8 +16,4 @@
     <ProjectReference Include="..\TicketManagementSystemAPI.Domain\TicketManagementSystemAPI.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\Orders\Commands\" />
-  </ItemGroup>
-
 </Project>
