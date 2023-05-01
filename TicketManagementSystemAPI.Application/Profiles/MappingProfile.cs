@@ -9,6 +9,8 @@ using TicketManagementSystemAPI.Application.Features.Events.Commands.DeleteEvent
 using TicketManagementSystemAPI.Application.Features.Events.Commands.UpdateEvent;
 using TicketManagementSystemAPI.Application.Features.Events.Queries.GetEventDetail;
 using TicketManagementSystemAPI.Application.Features.Events.Queries.GetEventsList;
+using TicketManagementSystemAPI.Application.Features.Orders.Queries.GetOrderDetail;
+using TicketManagementSystemAPI.Application.Features.Orders.Queries.GetOrdersList;
 using TicketManagementSystemAPI.Domain.Entities;
 
 namespace TicketManagementSystemAPI.Application.Profiles
@@ -25,6 +27,8 @@ namespace TicketManagementSystemAPI.Application.Profiles
             CreateMap<Event, CreateEventCommand>().ReverseMap();
             CreateMap<Event, UpdateEventCommand>().ReverseMap();
             CreateMap<Event, DeleteEventCommand>().ReverseMap();
+            CreateMap<Order, OrderListVm>().ReverseMap();
+            CreateMap<Order, OrderDetailVm>().ReverseMap();
         }
     }
 }
