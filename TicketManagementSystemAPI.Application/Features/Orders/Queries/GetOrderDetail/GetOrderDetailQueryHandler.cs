@@ -23,8 +23,8 @@ namespace TicketManagementSystemAPI.Application.Features.Orders.Queries.GetOrder
 
         public async Task<OrderDetailVm> Handle(GetOrderDetailQuery request, CancellationToken cancellationToken)
         {
-            var @order = await _orderRepository.GetByIdAsync(request.Id);
-            var orderDetailDto = _mapper.Map<OrderDetailVm>(@order);
+            Order @order = await _orderRepository.GetByIdAsync(request.Id);
+            OrderDetailVm orderDetailDto = _mapper.Map<OrderDetailVm>(@order);
 
             return orderDetailDto;
         }

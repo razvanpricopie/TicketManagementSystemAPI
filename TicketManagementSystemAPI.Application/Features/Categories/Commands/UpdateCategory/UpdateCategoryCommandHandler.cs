@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation.Results;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -25,8 +26,8 @@ namespace TicketManagementSystemAPI.Application.Features.Categories.Commands.Upd
 
         public async Task<Unit> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
         {
-            var validator = new UpdateCategoryCommanmdValidator();
-            var validationResult = await validator.ValidateAsync(request);
+            UpdateCategoryCommanmdValidator validator = new UpdateCategoryCommanmdValidator();
+            ValidationResult validationResult = await validator.ValidateAsync(request);
 
             if (validationResult.Errors.Count > 0)
                 throw new Exceptions.ValidationException(validationResult);

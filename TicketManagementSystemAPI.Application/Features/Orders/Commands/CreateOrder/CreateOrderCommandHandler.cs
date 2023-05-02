@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation.Results;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -26,13 +27,13 @@ namespace TicketManagementSystemAPI.Application.Features.Orders.Commands.CreateO
 
         public async Task<Guid> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
         {
-            var validator = new CreateOrderCommandValidator();
-            var validationResult = await validator.ValidateAsync(request);
+            CreateOrderCommandValidator validator = new CreateOrderCommandValidator();
+            ValidationResult validationResult = await validator.ValidateAsync(request);
 
             if (validationResult.Errors.Count > 0)
                 throw new Exceptions.ValidationException(validationResult);
 
-            var @order = _mapper.Map<Order>(request);
+            Order @order = _mapper.Map<Order>(request);
 
             @order = await _orderRepository.AddAsync(@order);
 

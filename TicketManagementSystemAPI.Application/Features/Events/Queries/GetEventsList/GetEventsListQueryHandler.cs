@@ -24,7 +24,8 @@ namespace TicketManagementSystemAPI.Application.Features.Events.Queries.GetEvent
 
         public async Task<List<EventListVm>> Handle(GetEventsListQuery request, CancellationToken cancellationToken)
         {
-            var allEvents = (await _eventRepository.ListAllAsync()).OrderBy(x => x.Date);
+            List<Event> allEvents = (await _eventRepository.ListAllAsync()).OrderBy(x => x.Date).ToList();
+
             return _mapper.Map<List<EventListVm>>(allEvents);
         }
     }

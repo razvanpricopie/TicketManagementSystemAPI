@@ -24,7 +24,7 @@ namespace TicketManagementSystemAPI.Application.Features.Orders.Queries.GetOrder
 
         public async Task<List<OrderListVm>> Handle(GetOrdersListQuery request, CancellationToken cancellationToken)
         {
-            var allOrders = (await _orderRepository.ListAllAsync()).OrderBy(x => x.Date);
+            List<Order> allOrders = (await _orderRepository.ListAllAsync()).OrderBy(x => x.Date).ToList();
 
             return _mapper.Map<List<OrderListVm>>(allOrders);
         }

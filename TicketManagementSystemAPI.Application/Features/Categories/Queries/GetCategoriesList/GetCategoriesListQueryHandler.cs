@@ -24,7 +24,7 @@ namespace TicketManagementSystemAPI.Application.Features.Categories.Queries.GetC
 
         public async Task<List<CategoryListVm>> Handle(GetCategoriesListQuery request, CancellationToken cancellationToken)
         {
-            var categories = (await _categoryRepository.ListAllAsync()).OrderBy(x => x.Name);
+            List<Category> categories = (await _categoryRepository.ListAllAsync()).OrderBy(x => x.Name).ToList();
 
             return _mapper.Map<List<CategoryListVm>>(categories);
         }

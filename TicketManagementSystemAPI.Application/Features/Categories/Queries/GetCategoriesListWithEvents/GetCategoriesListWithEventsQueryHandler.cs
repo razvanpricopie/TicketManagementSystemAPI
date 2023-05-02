@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TicketManagementSystemAPI.Application.Contracts.Persistence;
+using TicketManagementSystemAPI.Domain.Entities;
 
 namespace TicketManagementSystemAPI.Application.Features.Categories.Queries.GetCategoriesListWithEvents
 {
@@ -22,7 +23,7 @@ namespace TicketManagementSystemAPI.Application.Features.Categories.Queries.GetC
 
         public async Task<List<CategoryEventListVm>> Handle(GetCategoriesListWithEventsQuery request, CancellationToken cancellationToken)
         {
-            var categories = await _categoryRepository.GetCategoriesWithEventsAsync(request.IncludeHistory);
+            List<Category> categories = await _categoryRepository.GetCategoriesWithEventsAsync(request.IncludeHistory);
 
             return _mapper.Map<List<CategoryEventListVm>>(categories);
         }

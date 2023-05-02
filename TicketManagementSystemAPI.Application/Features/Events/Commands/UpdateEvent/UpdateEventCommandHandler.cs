@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation.Results;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -24,8 +25,8 @@ namespace TicketManagementSystemAPI.Application.Features.Events.Commands.UpdateE
 
         public async Task<Unit> Handle(UpdateEventCommand request, CancellationToken cancellationToken)
         {
-            var validator = new UpdateEventCommandValidator(_eventRepository);
-            var validationResult = await validator.ValidateAsync(request);
+            UpdateEventCommandValidator validator = new UpdateEventCommandValidator(_eventRepository);
+            ValidationResult validationResult = await validator.ValidateAsync(request);
 
             if (validationResult.Errors.Count > 0)
                 throw new Exceptions.ValidationException(validationResult);
