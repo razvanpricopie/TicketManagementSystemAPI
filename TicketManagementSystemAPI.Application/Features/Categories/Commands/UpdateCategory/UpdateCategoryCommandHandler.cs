@@ -32,7 +32,7 @@ namespace TicketManagementSystemAPI.Application.Features.Categories.Commands.Upd
             if (categoryToUpdate == null)
                 throw new NotFoundException(nameof(Category), request.CategoryId);
 
-            UpdateCategoryCommanmdValidator validator = new UpdateCategoryCommanmdValidator(_categoryRepository);
+            UpdateCategoryCommandValidator validator = new UpdateCategoryCommandValidator(_categoryRepository);
             ValidationResult validationResult = await validator.ValidateAsync(request);
              
             if (validationResult.Errors.Count > 0)

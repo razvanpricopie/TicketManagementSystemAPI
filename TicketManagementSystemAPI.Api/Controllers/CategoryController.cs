@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TicketManagementSystemAPI.Application.Features.Categories.Commands.CreateCategory;
+using TicketManagementSystemAPI.Application.Features.Categories.Commands.DeleteCategory;
 using TicketManagementSystemAPI.Application.Features.Categories.Commands.UpdateCategory;
 using TicketManagementSystemAPI.Application.Features.Categories.Queries.GetCategoriesList;
 using TicketManagementSystemAPI.Application.Features.Categories.Queries.GetCategoriesListWithEvents;
@@ -44,6 +46,8 @@ namespace TicketManagementSystemAPI.Api.Controllers
         }
 
         [HttpPost("addcategory", Name = "AddCategory")]
+        [ProducesDefaultResponseType]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<CreateCategoryCommandResponse>> Create([FromBody] CreateCategoryCommand createCategoryCommand)
         {
             CreateCategoryCommandResponse response = await _mediator.Send(createCategoryCommand);
@@ -58,6 +62,19 @@ namespace TicketManagementSystemAPI.Api.Controllers
         public async Task<ActionResult> Update([FromBody] UpdateCategoryCommand updateCategoryCommand)
         {
             await _mediator.Send(updateCategoryCommand);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{CategoryId}", Name = "DeleteCategory")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult> Delete(Guid categoryId)
+        {
+            DeleteCategoryCommand deleteCategoryCommand = new DeleteCategoryCommand() { CategoryId = categoryId };
+
+            await _mediator.Send(deleteCategoryCommand);
 
             return NoContent();
         }

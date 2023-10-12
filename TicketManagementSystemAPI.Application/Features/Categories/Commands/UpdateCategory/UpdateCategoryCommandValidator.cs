@@ -10,11 +10,11 @@ using TicketManagementSystemAPI.Domain.Entities;
 
 namespace TicketManagementSystemAPI.Application.Features.Categories.Commands.UpdateCategory
 {
-    public class UpdateCategoryCommanmdValidator : AbstractValidator<UpdateCategoryCommand>
+    public class UpdateCategoryCommandValidator : AbstractValidator<UpdateCategoryCommand>
     {
         private readonly ICategoryRepository _categoryRepository;
 
-        public UpdateCategoryCommanmdValidator(ICategoryRepository categoryRepository)
+        public UpdateCategoryCommandValidator(ICategoryRepository categoryRepository)
         {
             _categoryRepository = categoryRepository;
 
@@ -26,27 +26,11 @@ namespace TicketManagementSystemAPI.Application.Features.Categories.Commands.Upd
             RuleFor(p => p)
                 .MustAsync(CategoryNameUniqueAsync)
                 .WithMessage("A category with the same name already exists..");
-
-            //RuleFor(p => p)
-            //    .MustAsync(CategoryExists)
-            //    .WithMessage("You update nothing :( This category not even exists");
         }
 
         private async Task<bool> CategoryNameUniqueAsync(UpdateCategoryCommand c, CancellationToken cancellationToken)
         {
             return !(await _categoryRepository.IsCategoryNameUnique(c.Name));
-        }
-
-        ///////////GOT AN ERROR HERE, PLS FIX IT
-        /////////////////////////////////////////////////////////////////////////////////////////////////////
-        private async Task<bool> CategoryExists(UpdateCategoryCommand c, CancellationToken cancellationToken)
-        {
-            Category category = await _categoryRepository.GetByIdAsync(c.CategoryId);
-
-            if (category != null)
-                return true;
-
-            return false;
         }
     }
 }
