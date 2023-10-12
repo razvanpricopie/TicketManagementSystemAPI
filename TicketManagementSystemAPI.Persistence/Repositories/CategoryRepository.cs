@@ -27,5 +27,12 @@ namespace TicketManagementSystemAPI.Persistence.Repositories
 
             return allCategories;
         }
+
+        public Task<bool> IsCategoryNameUnique(string name)
+        {
+            bool matches = _dbContext.Categories.Any(c => c.Name.Equals(name));
+
+            return Task.FromResult(matches);
+        }
     }
 }

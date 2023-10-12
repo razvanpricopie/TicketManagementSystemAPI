@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TicketManagementSystemAPI.Application.Contracts.Persistence;
+using TicketManagementSystemAPI.Application.Exceptions;
 using TicketManagementSystemAPI.Application.Features.Events.Commands.CreateEvent;
 using TicketManagementSystemAPI.Application.Features.Events.Commands.UpdateEvent;
 using TicketManagementSystemAPI.Domain.Entities;
@@ -16,9 +17,9 @@ namespace TicketManagementSystemAPI.Application.Features.Categories.Commands.Upd
     public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommand>
     {
         private readonly IMapper _mapper;
-        private readonly IAsyncRepository<Category> _categoryRepository;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public UpdateCategoryCommandHandler(IMapper mapper, IAsyncRepository<Category> categoryRepository)
+        public UpdateCategoryCommandHandler(IMapper mapper, ICategoryRepository categoryRepository)
         {
             _mapper = mapper;
             _categoryRepository = categoryRepository;
@@ -26,15 +27,18 @@ namespace TicketManagementSystemAPI.Application.Features.Categories.Commands.Upd
 
         public async Task<Unit> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
         {
-            UpdateCategoryCommanmdValidator validator = new UpdateCategoryCommanmdValidator();
-            ValidationResult validationResult = await validator.ValidateAsync(request);
-
-            if (validationResult.Errors.Count > 0)
-                throw new Exceptions.ValidationException(validationResult);
-
             Category categoryToUpdate = await _categoryRepository.GetByIdAsync(request.CategoryId);
+            
+            if (categoryToUpdate == null)
+                throw new NotFoundException(nameof(Category), request.CategoryId);
 
-            _mapper.Map(request, categoryToUpdate, typeof(UpdateEventCommand), typeof(Category));
+            UpdateCategoryCommanmdValidator validator = new UpdateCategoryCommanmdValidator(_categoryRepository);
+            ValidationResult validationResult = await validator.ValidateAsync(request);
+             
+            if (validationResult.Errors.Count > 0)
+                throw new ValidationException(validationResult);
+
+            _mapper.Map(request, categoryToUpdate, typeof(UpdateCategoryCommand), typeof(Category));
 
             await _categoryRepository.UpdateAsync(categoryToUpdate);
 

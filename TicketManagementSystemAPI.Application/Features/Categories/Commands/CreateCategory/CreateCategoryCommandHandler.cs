@@ -15,9 +15,9 @@ namespace TicketManagementSystemAPI.Application.Features.Categories.Commands.Cre
     public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, CreateCategoryCommandResponse>
     {
         private readonly IMapper _mapper;
-        private readonly IAsyncRepository<Category> _categoryRepository;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public CreateCategoryCommandHandler(IMapper mapper, IAsyncRepository<Category> categoryRepository)
+        public CreateCategoryCommandHandler(IMapper mapper, ICategoryRepository categoryRepository)
         {
             _mapper = mapper;
             _categoryRepository = categoryRepository;
@@ -27,7 +27,7 @@ namespace TicketManagementSystemAPI.Application.Features.Categories.Commands.Cre
         {
             CreateCategoryCommandResponse createCategoryCommandResponse = new CreateCategoryCommandResponse();
 
-            CreateCategoryCommandValidator validator = new CreateCategoryCommandValidator();
+            CreateCategoryCommandValidator validator = new CreateCategoryCommandValidator(_categoryRepository);
             ValidationResult validationResult = await validator.ValidateAsync(request);
 
             if (validationResult.Errors.Count > 0)

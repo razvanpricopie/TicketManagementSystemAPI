@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TicketManagementSystemAPI.Application.Features.Categories.Commands.CreateCategory;
+using TicketManagementSystemAPI.Application.Features.Categories.Commands.UpdateCategory;
 using TicketManagementSystemAPI.Application.Features.Categories.Queries.GetCategoriesList;
 using TicketManagementSystemAPI.Application.Features.Categories.Queries.GetCategoriesListWithEvents;
 using TicketManagementSystemAPI.Application.Features.Events.Commands.CreateEvent;
@@ -20,17 +22,31 @@ namespace TicketManagementSystemAPI.Application.Profiles
     {
         public MappingProfile()
         {
+            //CreateMap<Event, EventListVm>().ReverseMap();
+            //CreateMap<Event, EventDetailVm>().ReverseMap();
+            //CreateMap<Category, CategoryDto>().ReverseMap();
+            //CreateMap<Category, CategoryListVm>().ReverseMap();
+            //CreateMap<Category, CategoryEventListVm>().ReverseMap();
+            //CreateMap<List<Category>, List<CategoryEventListVm>>().ReverseMap();
+            //CreateMap<Event, CreateEventCommand>().ReverseMap();
+            //CreateMap<Event, UpdateEventCommand>().ReverseMap();
+            //CreateMap<Event, DeleteEventCommand>().ReverseMap();
+            //CreateMap<Order, OrderListVm>().ReverseMap();
+            //CreateMap<Order, OrderDetailVm>().ReverseMap();
+            //CreateMap<Order, CreateOrderCommand>().ReverseMap();
+
             CreateMap<Event, EventListVm>().ReverseMap();
-            CreateMap<Event, EventDetailVm>().ReverseMap();
-            CreateMap<Category, CategoryDto>().ReverseMap();
-            CreateMap<Category, CategoryListVm>().ReverseMap();
-            CreateMap<Category, CategoryEventListVm>().ReverseMap();
             CreateMap<Event, CreateEventCommand>().ReverseMap();
             CreateMap<Event, UpdateEventCommand>().ReverseMap();
-            CreateMap<Event, DeleteEventCommand>().ReverseMap();
-            CreateMap<Order, OrderListVm>().ReverseMap();
-            CreateMap<Order, OrderDetailVm>().ReverseMap();
-            CreateMap<Order, CreateOrderCommand>().ReverseMap();
+            CreateMap<Event, EventDetailVm>().ReverseMap();
+            CreateMap<Event, CategoryEventDto>().ReverseMap();
+
+            CreateMap<Category, CategoryDto>();
+            CreateMap<Category, CategoryListVm>();
+            CreateMap<Category, CategoryEventListVm>();
+            CreateMap<Category, CreateCategoryCommand>();
+            CreateMap<Category, CreateCategoryDto>();
+            CreateMap<UpdateCategoryCommand, Category>();
         }
     }
 }
