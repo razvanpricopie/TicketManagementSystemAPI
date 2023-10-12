@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TicketManagementSystemAPI.Api.Middleware;
 using TicketManagementSystemAPI.Application;
 using TicketManagementSystemAPI.Infrastructure;
 using TicketManagementSystemAPI.Persistence;
@@ -50,6 +51,8 @@ namespace TicketManagementSystemAPI.Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCustomExceptionHandler();
 
             app.UseCors("Open");
 
