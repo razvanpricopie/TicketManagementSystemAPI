@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TicketManagementSystemAPI.Application.Contracts.Persistence;
+using TicketManagementSystemAPI.Application.Exceptions;
 using TicketManagementSystemAPI.Domain.Entities;
 
 namespace TicketManagementSystemAPI.Application.Features.Orders.Commands.DeleteOrder
@@ -24,6 +25,9 @@ namespace TicketManagementSystemAPI.Application.Features.Orders.Commands.DeleteO
         public async Task<Unit> Handle(DeleteOrderCommand request, CancellationToken cancellationToken)
         {
             Order orderToDelete = await _orderRepository.GetByIdAsync(request.OrderId);
+
+            if (orderToDelete == null)
+                throw new NotFoundException(nameof(Order), request.OrderId);
 
             await _orderRepository.DeleteAsync(orderToDelete);
 

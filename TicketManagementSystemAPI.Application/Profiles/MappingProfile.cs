@@ -22,23 +22,10 @@ namespace TicketManagementSystemAPI.Application.Profiles
     {
         public MappingProfile()
         {
-            //CreateMap<Event, EventListVm>().ReverseMap();
-            //CreateMap<Event, EventDetailVm>().ReverseMap();
-            //CreateMap<Category, CategoryDto>().ReverseMap();
-            //CreateMap<Category, CategoryListVm>().ReverseMap();
-            //CreateMap<Category, CategoryEventListVm>().ReverseMap();
-            //CreateMap<List<Category>, List<CategoryEventListVm>>().ReverseMap();
-            //CreateMap<Event, CreateEventCommand>().ReverseMap();
-            //CreateMap<Event, UpdateEventCommand>().ReverseMap();
-            //CreateMap<Event, DeleteEventCommand>().ReverseMap();
-            //CreateMap<Order, OrderListVm>().ReverseMap();
-            //CreateMap<Order, OrderDetailVm>().ReverseMap();
-            //CreateMap<Order, CreateOrderCommand>().ReverseMap();
-
             CreateMap<Event, EventListVm>().ReverseMap();
+            CreateMap<Event, EventDetailVm>().ReverseMap();
             CreateMap<Event, CreateEventCommand>().ReverseMap();
             CreateMap<Event, UpdateEventCommand>().ReverseMap();
-            CreateMap<Event, EventDetailVm>().ReverseMap();
             CreateMap<Event, CategoryEventDto>().ReverseMap();
 
             CreateMap<Category, CategoryDto>();
@@ -47,6 +34,10 @@ namespace TicketManagementSystemAPI.Application.Profiles
             CreateMap<Category, CreateCategoryCommand>();
             CreateMap<Category, CreateCategoryDto>();
             CreateMap<UpdateCategoryCommand, Category>();
+
+            CreateMap<Order, OrderListVm>().ReverseMap();
+            CreateMap<Order, OrderDetailVm>().ReverseMap();
+            CreateMap<Order, CreateOrderCommand>().ReverseMap();
         }
     }
 }

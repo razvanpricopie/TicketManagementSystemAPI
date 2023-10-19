@@ -29,8 +29,8 @@ namespace TicketManagementSystemAPI.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<List<CategoryListVm>>> GetAllCategories()
         {
-            List<CategoryListVm> dtos = await _mediator.Send(new GetCategoriesListQuery());
-            return Ok(dtos);
+            List<CategoryListVm> categories = await _mediator.Send(new GetCategoriesListQuery());
+            return Ok(categories);
         }
 
         //[Authorize]
@@ -41,8 +41,8 @@ namespace TicketManagementSystemAPI.Api.Controllers
         {
             GetCategoriesListWithEventsQuery getCategoriesListWithEventsQuery = new GetCategoriesListWithEventsQuery() { IncludeHistory = includeHistory };
 
-            List<CategoryEventListVm> dtos = await _mediator.Send(getCategoriesListWithEventsQuery);
-            return Ok(dtos);
+            List<CategoryEventListVm> category = await _mediator.Send(getCategoriesListWithEventsQuery);
+            return Ok(category);
         }
 
         [HttpPost("addcategory", Name = "AddCategory")]

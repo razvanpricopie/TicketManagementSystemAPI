@@ -19,7 +19,8 @@ namespace TicketManagementSystemAPI.Application.Features.Orders.Commands.CreateO
                 .GreaterThan(0);
 
             RuleFor(p => p.Date)
-                .NotEmpty().WithMessage("{PropertyName} is required.").LessThan(DateTime.Now);
+                .NotEmpty().WithMessage("{PropertyName} is required.")
+                .LessThan(DateTime.Now);
         }
     }
 }

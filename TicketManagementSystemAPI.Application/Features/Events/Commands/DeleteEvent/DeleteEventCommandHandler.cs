@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TicketManagementSystemAPI.Application.Contracts.Persistence;
+using TicketManagementSystemAPI.Application.Exceptions;
 using TicketManagementSystemAPI.Domain.Entities;
 
 namespace TicketManagementSystemAPI.Application.Features.Events.Commands.DeleteEvent
@@ -24,6 +25,9 @@ namespace TicketManagementSystemAPI.Application.Features.Events.Commands.DeleteE
         public async Task<Unit> Handle(DeleteEventCommand request, CancellationToken cancellationToken)
         {
             Event eventToDelete = await _eventRepository.GetByIdAsync(request.EventId);
+
+            if (eventToDelete == null)
+                throw new NotFoundException(nameof(Event), request.EventId);
 
             await _eventRepository.DeleteAsync(eventToDelete);
 

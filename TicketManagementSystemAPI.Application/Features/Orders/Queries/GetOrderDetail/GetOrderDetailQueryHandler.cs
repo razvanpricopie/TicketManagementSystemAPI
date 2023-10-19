@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TicketManagementSystemAPI.Application.Contracts.Persistence;
+using TicketManagementSystemAPI.Application.Exceptions;
 using TicketManagementSystemAPI.Domain.Entities;
 
 namespace TicketManagementSystemAPI.Application.Features.Orders.Queries.GetOrderDetail
@@ -24,6 +25,10 @@ namespace TicketManagementSystemAPI.Application.Features.Orders.Queries.GetOrder
         public async Task<OrderDetailVm> Handle(GetOrderDetailQuery request, CancellationToken cancellationToken)
         {
             Order @order = await _orderRepository.GetByIdAsync(request.Id);
+
+            if (@order == null)
+                throw new NotFoundException(nameof(Order), request.Id);
+
             OrderDetailVm orderDetailDto = _mapper.Map<OrderDetailVm>(@order);
 
             return orderDetailDto;
