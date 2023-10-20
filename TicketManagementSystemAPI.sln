@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33424.131
@@ -17,11 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicketManagementSystemAPI.D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicketManagementSystemAPI.Application", "TicketManagementSystemAPI.Application\TicketManagementSystemAPI.Application.csproj", "{43CA2BF4-47DA-4972-B9CA-610D58DB58BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketManagementSystemAPI.Persistence", "TicketManagementSystemAPI.Persistence\TicketManagementSystemAPI.Persistence.csproj", "{29CEBB9C-0B6B-44CB-B1CA-978A0E5756EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicketManagementSystemAPI.Persistence", "TicketManagementSystemAPI.Persistence\TicketManagementSystemAPI.Persistence.csproj", "{29CEBB9C-0B6B-44CB-B1CA-978A0E5756EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketManagementSystemAPI.Infrastructure", "TicketManagementSystemAPI.Infrastructure\TicketManagementSystemAPI.Infrastructure.csproj", "{BCD939F7-E461-485D-8614-67369D3B9896}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicketManagementSystemAPI.Infrastructure", "TicketManagementSystemAPI.Infrastructure\TicketManagementSystemAPI.Infrastructure.csproj", "{BCD939F7-E461-485D-8614-67369D3B9896}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketManagementSystemAPI.Api", "TicketManagementSystemAPI.Api\TicketManagementSystemAPI.Api.csproj", "{EE4F07DD-B47E-4B68-B3E9-024BD2F3C102}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicketManagementSystemAPI.Api", "TicketManagementSystemAPI.Api\TicketManagementSystemAPI.Api.csproj", "{EE4F07DD-B47E-4B68-B3E9-024BD2F3C102}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
