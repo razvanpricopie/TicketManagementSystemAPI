@@ -29,6 +29,12 @@ namespace TicketManagementSystemAPI.Persistence
             var playGuid = Guid.Parse("{BF3F3002-7E53-441E-8B76-F6280BE284AA}");
             var conferenceGuid = Guid.Parse("{FE98F549-E790-4E9F-AA16-18C2292A2EE9}");
 
+            modelBuilder.Entity<Category>()
+                .HasMany(e => e.Events)
+                .WithOne(c => c.Category)
+                .HasForeignKey(e => e.CategoryId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.Entity<Category>().HasData(new Category
             {
                 CategoryId = concertGuid,

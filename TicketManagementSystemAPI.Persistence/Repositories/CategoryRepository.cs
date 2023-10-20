@@ -34,5 +34,7 @@ namespace TicketManagementSystemAPI.Persistence.Repositories
 
             return Task.FromResult(matches);
         }
+
+        //public async Task DeleteCategories
     }
 }
