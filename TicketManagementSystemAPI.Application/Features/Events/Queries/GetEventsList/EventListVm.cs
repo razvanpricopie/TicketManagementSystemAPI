@@ -9,6 +9,7 @@ namespace TicketManagementSystemAPI.Application.Features.Events.Queries.GetEvent
         public Guid EventId { get; set; }
         public string Name { get; set; }
         public DateTime Date { get; set; }
+        public string Location { get; set; }
         public string ImageUrl { get; set; }
     }
 }
