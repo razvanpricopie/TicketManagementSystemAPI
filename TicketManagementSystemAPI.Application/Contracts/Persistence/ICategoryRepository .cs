@@ -9,6 +9,7 @@ namespace TicketManagementSystemAPI.Application.Contracts.Persistence
     public interface ICategoryRepository : IAsyncRepository<Category>
     {
         Task<List<Category>> GetCategoriesWithEventsAsync(bool includePassedEvents);
+        Task<Category> GetCategoryWithEventsAsync(Guid categoryId, bool includePassedEvents);
         Task<bool> IsCategoryNameUnique(string name);
     }
 }

@@ -10,6 +10,7 @@ using TicketManagementSystemAPI.Application.Features.Categories.Commands.DeleteC
 using TicketManagementSystemAPI.Application.Features.Categories.Commands.UpdateCategory;
 using TicketManagementSystemAPI.Application.Features.Categories.Queries.GetCategoriesList;
 using TicketManagementSystemAPI.Application.Features.Categories.Queries.GetCategoriesListWithEvents;
+using TicketManagementSystemAPI.Application.Features.Categories.Queries.GetCategoryWithEvents;
 
 namespace TicketManagementSystemAPI.Api.Controllers
 {
@@ -25,7 +26,7 @@ namespace TicketManagementSystemAPI.Api.Controllers
         }
 
         //[Authorize]
-        [HttpGet("all", Name = "GetAllCategories")]
+        [HttpGet("allcategories", Name = "GetAllCategories")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<List<CategoryListVm>>> GetAllCategories()
         {
@@ -41,7 +42,20 @@ namespace TicketManagementSystemAPI.Api.Controllers
         {
             GetCategoriesListWithEventsQuery getCategoriesListWithEventsQuery = new GetCategoriesListWithEventsQuery() { IncludeHistory = includeHistory };
 
-            List<CategoryEventListVm> category = await _mediator.Send(getCategoriesListWithEventsQuery);
+            List<CategoryEventListVm> categories = await _mediator.Send(getCategoriesListWithEventsQuery);
+            return Ok(categories);
+        }
+
+        //[Authorize]
+        [HttpGet("{categoryId}", Name = "GetCategoryWithEvents")]
+        [ProducesDefaultResponseType]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<CategoryWithEventsVm>> GetCategoryWithEvents(Guid categoryId, bool includeHistory)
+        {
+            GetCategoryWithEventsQuery getCategoriesListWithEventsQuery = new GetCategoryWithEventsQuery() { Id = categoryId, IncludeHistory = includeHistory };
+
+            CategoryWithEventsVm category = await _mediator.Send(getCategoriesListWithEventsQuery);
+
             return Ok(category);
         }
 

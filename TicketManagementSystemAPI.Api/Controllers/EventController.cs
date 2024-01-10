@@ -23,7 +23,7 @@ namespace TicketManagementSystemAPI.Api.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet("all", Name = "GetAllEvents")]
+        [HttpGet("allevents", Name = "GetAllEvents")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<List<EventListVm>>> GetAllEvents()
         {

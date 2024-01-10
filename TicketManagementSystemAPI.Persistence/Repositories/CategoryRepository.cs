@@ -28,6 +28,18 @@ namespace TicketManagementSystemAPI.Persistence.Repositories
             return allCategories;
         }
 
+        public async Task<Category> GetCategoryWithEventsAsync(Guid categoryId, bool includePassedEvents)
+        {
+            Category category = await _dbContext.Categories.Include(x => x.Events).FirstOrDefaultAsync(c => c.CategoryId == categoryId);
+
+            if (category != null && !includePassedEvents)
+            {
+                category.Events.ToList().RemoveAll(c => c.Date < DateTime.Today);
+            }
+
+            return category;
+        }
+
         public Task<bool> IsCategoryNameUnique(string name)
         {
             bool matches = _dbContext.Categories.Any(c => c.Name.Equals(name));

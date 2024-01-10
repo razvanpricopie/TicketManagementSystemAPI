@@ -6,6 +6,7 @@ using TicketManagementSystemAPI.Application.Features.Categories.Commands.CreateC
 using TicketManagementSystemAPI.Application.Features.Categories.Commands.UpdateCategory;
 using TicketManagementSystemAPI.Application.Features.Categories.Queries.GetCategoriesList;
 using TicketManagementSystemAPI.Application.Features.Categories.Queries.GetCategoriesListWithEvents;
+using TicketManagementSystemAPI.Application.Features.Categories.Queries.GetCategoryWithEvents;
 using TicketManagementSystemAPI.Application.Features.Events.Commands.CreateEvent;
 using TicketManagementSystemAPI.Application.Features.Events.Commands.DeleteEvent;
 using TicketManagementSystemAPI.Application.Features.Events.Commands.UpdateEvent;
@@ -26,11 +27,13 @@ namespace TicketManagementSystemAPI.Application.Profiles
             CreateMap<Event, EventDetailVm>().ReverseMap();
             CreateMap<Event, CreateEventCommand>().ReverseMap();
             CreateMap<Event, UpdateEventCommand>().ReverseMap();
-            CreateMap<Event, CategoryEventDto>().ReverseMap();
+            CreateMap<Event, Features.Categories.Queries.GetCategoriesListWithEvents.CategoryEventDto>().ReverseMap();
+            CreateMap<Event, Features.Categories.Queries.GetCategoryWithEvents.CategoryEventDto>().ReverseMap();
 
             CreateMap<Category, CategoryDto>();
             CreateMap<Category, CategoryListVm>();
             CreateMap<Category, CategoryEventListVm>();
+            CreateMap<Category, CategoryWithEventsVm>();
             CreateMap<Category, CreateCategoryCommand>();
             CreateMap<Category, CreateCategoryDto>();
             CreateMap<UpdateCategoryCommand, Category>();
