@@ -8,6 +8,6 @@ namespace TicketManagementSystemAPI.Application.Contracts.Persistence
 {
     public interface IEventRepository : IAsyncRepository<Event>
     {
-        Task<bool> IsEventNameAndDateUnique(string name, DateTime eventDate);
+        Task<bool> IsEventNameAndDateUnique(string name, DateTime eventDate, Guid? eventId = null);
     }
 }

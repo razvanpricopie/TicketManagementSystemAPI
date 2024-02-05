@@ -16,9 +16,9 @@ namespace TicketManagementSystemAPI.Persistence.Repositories
         {
         }
 
-        public Task<bool> IsEventNameAndDateUnique(string name, DateTime eventDate)
+        public Task<bool> IsEventNameAndDateUnique(string name, DateTime eventDate, Guid? eventId = null)
         {
-            bool matches = _dbContext.Events.Any(e => e.Name.Equals(name) && e.Date.Date.Equals(eventDate.Date));
+            bool matches = _dbContext.Events.Any(e => (eventId == null || !e.EventId.Equals(eventId)) && e.Name.Equals(name) && e.Date.Date.Equals(eventDate.Date));
 
             return Task.FromResult(matches);
         }

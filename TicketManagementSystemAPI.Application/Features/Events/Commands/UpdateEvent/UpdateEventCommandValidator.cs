@@ -38,7 +38,7 @@ namespace TicketManagementSystemAPI.Application.Features.Events.Commands.UpdateE
 
         private async Task<bool> EventNameAndDateUnique(UpdateEventCommand e, CancellationToken token)
         {
-            return !(await _eventRepository.IsEventNameAndDateUnique(e.Name, e.Date));
+            return !(await _eventRepository.IsEventNameAndDateUnique(e.Name, e.Date, e.EventId));
         }
     }
 }
