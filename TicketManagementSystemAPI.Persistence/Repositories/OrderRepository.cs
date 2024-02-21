@@ -15,15 +15,20 @@ namespace TicketManagementSystemAPI.Persistence.Repositories
         {
         }
 
+        public async Task<List<Order>> GetOrdersListWithTicketsAsync()
+        {
+            return await _dbContext.Orders.Include(x => x.Tickets).ToListAsync();
+        }
+
         public async Task<List<Order>> GetPagedOrdersForMonth(DateTime date, int page, int size)
         {
-            return await _dbContext.Orders.Where(x => x.Date.Month == date.Month && x.Date.Year == date.Year)
+            return await _dbContext.Orders.Where(x => x.CreatedDate.Month == date.Month && x.CreatedDate.Year == date.Year)
                 .Skip((page - 1) * size).Take(size).AsNoTracking().ToListAsync();
         }
 
         public async Task<int> GetTotalCountOfOrdersForMonth(DateTime date)
         {
-            return await _dbContext.Orders.CountAsync(x => x.Date.Month == date.Month && x.Date.Year == date.Year);
+            return await _dbContext.Orders.CountAsync(x => x.CreatedDate.Month == date.Month && x.CreatedDate.Year == date.Year);
         }
     }
 }

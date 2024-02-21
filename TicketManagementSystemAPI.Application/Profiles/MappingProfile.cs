@@ -38,9 +38,14 @@ namespace TicketManagementSystemAPI.Application.Profiles
             CreateMap<Category, CreateCategoryDto>();
             CreateMap<UpdateCategoryCommand, Category>();
 
-            CreateMap<Order, OrderListVm>().ReverseMap();
-            CreateMap<Order, OrderDetailVm>().ReverseMap();
-            CreateMap<Order, CreateOrderCommand>().ReverseMap();
+            CreateMap<Order, OrderListVm>().ForMember(dto => dto.NumberOfTickets, opt => opt.MapFrom(o => o.Tickets.Count));
+            CreateMap<Order, OrderDetailVm>();
+            CreateMap<CreateOrderCommand, Order>();
+
+            CreateMap<Ticket, Features.Orders.Commands.CreateOrder.TicketDto>().ReverseMap();
+            CreateMap<Ticket, Features.Orders.Queries.GetOrdersList.TicketDto>().ReverseMap();
+            CreateMap<Ticket, Features.Orders.Queries.GetOrderDetail.TicketDto>()
+                .ForMember(dto => dto.EventName, opt => opt.MapFrom(t => t.Event.Name));
         }
     }
 }

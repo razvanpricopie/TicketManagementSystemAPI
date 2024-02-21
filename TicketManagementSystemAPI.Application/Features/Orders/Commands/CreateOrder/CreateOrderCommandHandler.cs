@@ -35,9 +35,9 @@ namespace TicketManagementSystemAPI.Application.Features.Orders.Commands.CreateO
 
             Order @order = _mapper.Map<Order>(request);
 
-            @order = await _orderRepository.AddAsync(@order);
+            await _orderRepository.AddAsync(@order);
 
-            return @order.Id;
+            return order.Id;
         }
     }
 }

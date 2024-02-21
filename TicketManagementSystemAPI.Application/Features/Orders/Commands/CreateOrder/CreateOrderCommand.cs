@@ -9,12 +9,6 @@ namespace TicketManagementSystemAPI.Application.Features.Orders.Commands.CreateO
     {
         public Guid UserId { get; set; }
         public int OrderTotal { get; set; }
-        public DateTime Date { get; set; }
-        public bool OrderPaid { get; set; }
-
-        public override string ToString()
-        {
-            return $"Order user: {UserId}; Order total: {OrderTotal}; Order paid: {OrderPaid}; On: {Date.ToShortDateString()}";
-        }
+        public ICollection<TicketDto> Tickets { get; set; }
     }
 }

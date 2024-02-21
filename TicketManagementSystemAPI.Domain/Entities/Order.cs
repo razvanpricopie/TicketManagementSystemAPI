@@ -10,7 +10,6 @@ namespace TicketManagementSystemAPI.Domain.Entities
         public Guid Id { get; set; }
         public Guid UserId { get; set; }
         public int OrderTotal { get; set; }
-        public DateTime Date { get; set; }
-        public bool OrderPaid { get; set; }
+        public ICollection<Ticket> Tickets { get; set; }
     }
 }

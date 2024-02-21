@@ -18,6 +18,7 @@ namespace TicketManagementSystemAPI.Persistence
         public DbSet<Event> Events { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -130,65 +131,65 @@ namespace TicketManagementSystemAPI.Persistence
 
             modelBuilder.Entity<Order>().HasData(new Order
             {
-                Id = Guid.Parse("{7E94BC5B-71A5-4C8C-BC3B-71BB7976237E}"),
+                Id = Guid.Parse("{d197c147-0be8-4955-9f7a-e491bc080895}"),
+                CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                 OrderTotal = 400,
-                OrderPaid = true,
-                Date = DateTime.Now,
-                UserId = Guid.Parse("{A441EB40-9636-4EE6-BE49-A66C5EC1330B}")
+                UserId = Guid.Parse("a441eb40-9636-4ee6-be49-a66c5ec1330b"),
             });
 
             modelBuilder.Entity<Order>().HasData(new Order
             {
-                Id = Guid.Parse("{86D3A045-B42D-4854-8150-D6A374948B6E}"),
+                Id = Guid.Parse("{742b3685-fea6-4b34-b0f1-f79e6845a44d}"),
+                CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                 OrderTotal = 135,
-                OrderPaid = true,
-                Date = DateTime.Now,
-                UserId = Guid.Parse("{AC3CFAF5-34FD-4E4D-BC04-AD1083DDC340}")
+                UserId = Guid.Parse("ac3cfaf5-34fd-4e4d-bc04-ad1083ddc340")
             });
 
             modelBuilder.Entity<Order>().HasData(new Order
             {
-                Id = Guid.Parse("{771CCA4B-066C-4AC7-B3DF-4D12837FE7E0}"),
+                Id = Guid.Parse("{94dc670d-da05-4777-b647-bf6530d00c74}"),
+                CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                 OrderTotal = 85,
-                OrderPaid = true,
-                Date = DateTime.Now,
-                UserId = Guid.Parse("{D97A15FC-0D32-41C6-9DDF-62F0735C4C1C}")
+                UserId = Guid.Parse("{d97a15fc-0d32-41c6-9ddf-62f0735c4c1c}")
             });
 
-            modelBuilder.Entity<Order>().HasData(new Order
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
             {
-                Id = Guid.Parse("{3DCB3EA0-80B1-4781-B5C0-4D85C41E55A6}"),
-                OrderTotal = 245,
-                OrderPaid = true,
-                Date = DateTime.Now,
-                UserId = Guid.Parse("{4AD901BE-F447-46DD-BCF7-DBE401AFA203}")
+                TicketId = Guid.Parse("{095d3fd9-9566-4614-9be9-1551757fbc21}"),
+                EventId = Guid.Parse("{EE272F8B-6096-4CB6-8625-BB4BB2D89E8B}"),
+                OrderId = Guid.Parse("{d197c147-0be8-4955-9f7a-e491bc080895}"),
+                Price = 65,
+                Quantity = 4
             });
 
-            modelBuilder.Entity<Order>().HasData(new Order
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
             {
-                Id = Guid.Parse("{E6A2679C-79A3-4EF1-A478-6F4C91B405B6}"),
-                OrderTotal = 142,
-                OrderPaid = true,
-                Date = DateTime.Now,
-                UserId = Guid.Parse("{7AEB2C01-FE8E-4B84-A5BA-330BDF950F5C}")
+                TicketId = Guid.Parse("{85618527-db95-474e-b0fd-44de0bb11c36}"),
+                EventId = Guid.Parse("{1BABD057-E980-4CB3-9CD2-7FDD9E525668}"),
+                OrderId = Guid.Parse("{d197c147-0be8-4955-9f7a-e491bc080895}"),
+                Price = 400,
+                Quantity = 1
             });
 
-            modelBuilder.Entity<Order>().HasData(new Order
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
             {
-                Id = Guid.Parse("{F5A6A3A0-4227-4973-ABB5-A63FBE725923}"),
-                OrderTotal = 40,
-                OrderPaid = true,
-                Date = DateTime.Now,
-                UserId = Guid.Parse("{F5A6A3A0-4227-4973-ABB5-A63FBE725923}")
+                TicketId = Guid.Parse("{2ba49616-c284-42c0-b883-487910d8eca0}"),
+                EventId = Guid.Parse("{ADC42C09-08C1-4D2C-9F96-2D15BB1AF299}"),
+                OrderId = Guid.Parse("{742b3685-fea6-4b34-b0f1-f79e6845a44d}"),
+                Price = 135,
+                Quantity = 1
             });
 
-            modelBuilder.Entity<Order>().HasData(new Order
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
             {
-                Id = Guid.Parse("{BA0EB0EF-B69B-46FD-B8E2-41B4178AE7CB}"),
-                OrderTotal = 116,
-                OrderPaid = true,
-                Date = DateTime.Now,
-                UserId = Guid.Parse("{7AEB2C01-FE8E-4B84-A5BA-330BDF950F5C}")
+                TicketId = Guid.Parse("{997da3fc-168a-4ebb-b8b0-f8727ddb6f34}"),
+                EventId = Guid.Parse("{3448D5A4-0F72-4DD7-BF15-C14A46B26C00}"),
+                OrderId = Guid.Parse("{94dc670d-da05-4777-b647-bf6530d00c74}"),
+                Price = 85,
+                Quantity = 1
             });
         }
 

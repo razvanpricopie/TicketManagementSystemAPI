@@ -14,9 +14,9 @@ namespace TicketManagementSystemAPI.Application.Features.Orders.Queries.GetOrder
     public class OrderListQueryHandler : IRequestHandler<GetOrdersListQuery, List<OrderListVm>>
     {
         private readonly IMapper _mapper;
-        private readonly IAsyncRepository<Order> _orderRepository;
+        private readonly IOrderRepository _orderRepository;
 
-        public OrderListQueryHandler(IMapper mapper, IAsyncRepository<Order> orderRepository)
+        public OrderListQueryHandler(IMapper mapper, IOrderRepository orderRepository)
         {
             _mapper = mapper;
             _orderRepository = orderRepository;
@@ -24,7 +24,7 @@ namespace TicketManagementSystemAPI.Application.Features.Orders.Queries.GetOrder
 
         public async Task<List<OrderListVm>> Handle(GetOrdersListQuery request, CancellationToken cancellationToken)
         {
-            List<Order> allOrders = (await _orderRepository.ListAllAsync()).OrderBy(x => x.Date).ToList();
+            List<Order> allOrders = (await _orderRepository.GetOrdersListWithTicketsAsync()).OrderBy(x => x.CreatedDate).ToList();
 
             return _mapper.Map<List<OrderListVm>>(allOrders);
         }

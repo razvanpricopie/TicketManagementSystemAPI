@@ -14,17 +14,26 @@ namespace TicketManagementSystemAPI.Application.Features.Orders.Queries.GetOrder
     public class GetOrderDetailQueryHandler : IRequestHandler<GetOrderDetailQuery, OrderDetailVm>
     {
         private readonly IMapper _mapper;
-        private readonly IAsyncRepository<Order> _orderRepository;
+        private readonly IOrderRepository _orderRepository;
+        private readonly ITicketRepository _ticketRepository;
 
-        public GetOrderDetailQueryHandler(IMapper mapper, IAsyncRepository<Order> orderRepository)
+        public GetOrderDetailQueryHandler(IMapper mapper, IOrderRepository orderRepository, ITicketRepository ticketRepository)
         {
             _mapper = mapper;
             _orderRepository = orderRepository;
+            _ticketRepository = ticketRepository;
         }
 
         public async Task<OrderDetailVm> Handle(GetOrderDetailQuery request, CancellationToken cancellationToken)
         {
             Order @order = await _orderRepository.GetByIdAsync(request.Id);
+
+            List<Ticket> tickets = await _ticketRepository.GetTicketByOrderId(@order.Id);
+
+            if (tickets == null)
+                throw new NotFoundException(nameof(Ticket), request.Id);
+
+            @order.Tickets = tickets;
 
             if (@order == null)
                 throw new NotFoundException(nameof(Order), request.Id);
