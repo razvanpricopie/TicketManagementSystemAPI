@@ -28,15 +28,15 @@ namespace TicketManagementSystemAPI.Application.Features.Orders.Queries.GetOrder
         {
             Order @order = await _orderRepository.GetByIdAsync(request.Id);
 
+            if (@order == null)
+                throw new NotFoundException(nameof(Order), request.Id);
+
             List<Ticket> tickets = await _ticketRepository.GetTicketByOrderId(@order.Id);
 
             if (tickets == null)
                 throw new NotFoundException(nameof(Ticket), request.Id);
 
             @order.Tickets = tickets;
-
-            if (@order == null)
-                throw new NotFoundException(nameof(Order), request.Id);
 
             OrderDetailVm orderDetailDto = _mapper.Map<OrderDetailVm>(@order);
 

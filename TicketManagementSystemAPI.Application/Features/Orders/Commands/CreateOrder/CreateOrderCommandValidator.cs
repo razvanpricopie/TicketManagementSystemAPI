@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace TicketManagementSystemAPI.Application.Features.Orders.Commands.CreateOrder
@@ -18,7 +19,8 @@ namespace TicketManagementSystemAPI.Application.Features.Orders.Commands.CreateO
             RuleFor(p => p.OrderTotal)
                 .NotNull()
                 .WithMessage("{PropertyName} must not be null or empty")
-                .GreaterThan(0);
+                .Equal(p => p.Tickets.Sum(t => t.Quantity * t.Price))
+                .GreaterThan(0).When(p => p.Tickets != null && p.Tickets.Any());
 
             RuleFor(p => p.Tickets)
                 .NotEmpty().WithMessage("{PropertyName} must not be empty")
