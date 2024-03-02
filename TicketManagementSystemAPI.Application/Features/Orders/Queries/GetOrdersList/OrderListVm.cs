@@ -10,5 +10,6 @@ namespace TicketManagementSystemAPI.Application.Features.Orders.Queries.GetOrder
         public Guid UserId { get; set; }
         public int OrderTotal { get; set; }
         public int NumberOfTickets { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 }
