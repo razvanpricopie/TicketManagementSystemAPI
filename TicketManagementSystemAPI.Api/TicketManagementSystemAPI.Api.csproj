@@ -8,6 +8,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TicketManagementSystemAPI.Application\TicketManagementSystemAPI.Application.csproj" />
+    <ProjectReference Include="..\TicketManagementSystemAPI.Identity\TicketManagementSystemAPI.Identity.csproj" />
     <ProjectReference Include="..\TicketManagementSystemAPI.Infrastructure\TicketManagementSystemAPI.Infrastructure.csproj" />
     <ProjectReference Include="..\TicketManagementSystemAPI.Persistence\TicketManagementSystemAPI.Persistence.csproj" />
   </ItemGroup>

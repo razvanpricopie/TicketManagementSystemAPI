@@ -14,6 +14,7 @@ using TicketManagementSystemAPI.Api.Middleware;
 using TicketManagementSystemAPI.Application;
 using TicketManagementSystemAPI.Infrastructure;
 using TicketManagementSystemAPI.Persistence;
+using TicketManagementSystemAPI.Identity;
 
 namespace TicketManagementSystemAPI.Api
 {
@@ -32,6 +33,8 @@ namespace TicketManagementSystemAPI.Api
             services.AddApplicationServices();
             services.AddInfrastructureServices(Configuration);
             services.AddPersistenceServices(Configuration);
+            services.AddIdentityServices(Configuration);
+
             services.AddControllers();
 
             services.AddCors(options => 
@@ -51,10 +54,13 @@ namespace TicketManagementSystemAPI.Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseAuthentication();
 
             app.UseCustomExceptionHandler();
 
             app.UseCors("Open");
+
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
