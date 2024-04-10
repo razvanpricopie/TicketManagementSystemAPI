@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using TicketManagementSystemAPI.Application.Contracts.Identity;
+using TicketManagementSystemAPI.Application.Exceptions;
 using TicketManagementSystemAPI.Application.Models.Authentication;
 using TicketManagementSystemAPI.Identity.Models;
 
@@ -33,23 +34,25 @@ namespace TicketManagementSystemAPI.Identity.Services
 
             if (user == null)
             {
-                throw new Exception($"User with {request.Email} not found.");
+                throw new NotFoundException($"User '{request.Email}' not found.");
             }
 
             var result = await _signInManager.PasswordSignInAsync(user.Email, request.Password, false, false);
 
             if (!result.Succeeded)
             {
-                throw new Exception($"Credentials for '{request.Email} aren't valid'.");
+                throw new UnauthorizedException($"Credentials for '{request.Email}' aren't valid.");
             }
 
             JwtSecurityToken jwtSecurityToken = await GenerateToken(user);
 
             AuthenticationResponse response = new AuthenticationResponse
             {
-                Id = user.Id,
+                UserId = user.Id,
                 Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
-                Email = user.Email
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName
             };
 
             return response;
@@ -61,7 +64,7 @@ namespace TicketManagementSystemAPI.Identity.Services
 
             if (existingUser != null)
             {
-                throw new Exception($"User with {request.Email} already exists.");
+                throw new BadRequestException($"User with {request.Email} already exists.");
             }
 
             var user = new ApplicationUser
@@ -81,7 +84,64 @@ namespace TicketManagementSystemAPI.Identity.Services
             }
             else
             {
-                throw new Exception($"{result.Errors}");
+                string errors = string.Join(Environment.NewLine, result.Errors.Select(e => e.Description));
+                throw new Exception(errors);
+            }
+        }
+
+        public async Task UpdateUserAsync(UpdateUserRequest request)
+        {
+            var user = await _userManager.FindByIdAsync(request.UserId.ToString());
+
+            if (user == null)
+            {
+                throw new NotFoundException($"User '{request.Email} - {request.UserId}' not found.");
+            }
+
+            user.FirstName = request.FirstName;
+            user.LastName = request.LastName;
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if(!result.Succeeded)
+            {
+                string errors = string.Join(Environment.NewLine, result.Errors.Select(e => e.Description));
+                throw new Exception(errors);
+            }
+        }
+
+        public async Task UpdatePasswordAsync(UpdatePasswordRequest request)
+        {
+            var user = await _userManager.FindByIdAsync(request.UserId.ToString());
+
+            if (user == null)
+            {
+                throw new NotFoundException($"User '{request.Email} - {request.UserId}' not found.");
+            }
+
+            var currentPasswordResult = await _signInManager.PasswordSignInAsync(user.Email, request.CurrentPassword, false, false);
+
+            if (!currentPasswordResult.Succeeded)
+            {
+                throw new UnauthorizedException($"Current password is incorrect.");
+            }
+
+            if(request.NewPassword != request.NewPasswordConfirmation)
+            {
+                throw new BadRequestException("New password and confirmation must match.");
+            }
+
+            if(request.CurrentPassword == request.NewPassword)
+            {
+                throw new BadRequestException("New password must be different from the current password.");
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
+
+            if (!result.Succeeded)
+            {
+                string errors = string.Join(Environment.NewLine, result.Errors.Select(e => e.Description));
+                throw new Exception(errors);
             }
         }
 

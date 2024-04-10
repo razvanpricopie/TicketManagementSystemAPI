@@ -44,13 +44,14 @@ namespace TicketManagementSystemAPI.Api.Middleware
                     break;
                 case BadRequestException badRequestException:
                     httpStatusCode = HttpStatusCode.BadRequest;
-                    result = badRequestException.Message;
+                    break;
+                case UnauthorizedException unauthorizedException:
+                    httpStatusCode = HttpStatusCode.Unauthorized;
                     break;
                 case NotFoundException notFoundException:
                     httpStatusCode = HttpStatusCode.NotFound;
                     break;
                 case Exception ex:
-                    httpStatusCode = HttpStatusCode.BadRequest;
                     break;
             }
 

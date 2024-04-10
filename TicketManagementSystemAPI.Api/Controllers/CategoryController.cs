@@ -25,7 +25,6 @@ namespace TicketManagementSystemAPI.Api.Controllers
             _mediator = mediator;
         }
 
-        //[Authorize]
         [HttpGet("allcategories", Name = "GetAllCategories")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<List<CategoryListVm>>> GetAllCategories()
@@ -34,7 +33,6 @@ namespace TicketManagementSystemAPI.Api.Controllers
             return Ok(categories);
         }
 
-        //[Authorize]
         [HttpGet("allwithevents", Name = "GetCategoriesWithEvents")]
         [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -46,7 +44,6 @@ namespace TicketManagementSystemAPI.Api.Controllers
             return Ok(categories);
         }
 
-        //[Authorize]
         [HttpGet("{categoryId}", Name = "GetCategoryWithEvents")]
         [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -59,32 +56,35 @@ namespace TicketManagementSystemAPI.Api.Controllers
             return Ok(category);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("addcategory", Name = "AddCategory")]
         [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<CreateCategoryCommandResponse>> Create([FromBody] CreateCategoryCommand createCategoryCommand)
+        public async Task<ActionResult<CreateCategoryCommandResponse>> CreateCategory([FromBody] CreateCategoryCommand createCategoryCommand)
         {
             CreateCategoryCommandResponse response = await _mediator.Send(createCategoryCommand);
 
             return Ok(response);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("{CategoryId}", Name = "UpdateCategory")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Update([FromBody] UpdateCategoryCommand updateCategoryCommand)
+        public async Task<ActionResult> UpdateCategory([FromBody] UpdateCategoryCommand updateCategoryCommand)
         {
             await _mediator.Send(updateCategoryCommand);
 
             return NoContent();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{CategoryId}", Name = "DeleteCategory")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Delete(Guid categoryId)
+        public async Task<ActionResult> DeleteCategory(Guid categoryId)
         {
             DeleteCategoryCommand deleteCategoryCommand = new DeleteCategoryCommand() { CategoryId = categoryId };
 

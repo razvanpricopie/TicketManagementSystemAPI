@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -20,6 +21,7 @@ namespace TicketManagementSystemAPI.Api.Controllers
             _mediator = mediator;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("all", Name = "GetAllOrders")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<List<OrderListVm>>> GetAllOrders()
@@ -29,6 +31,7 @@ namespace TicketManagementSystemAPI.Api.Controllers
             return Ok(orders);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("{OrderId}", Name = "GetOrderDetails")]
         [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -41,6 +44,7 @@ namespace TicketManagementSystemAPI.Api.Controllers
             return Ok(order);
         }
 
+        [Authorize(Roles = "Admin, User")]
         [HttpPost("addOrder", Name = "addOrder")]
         public async Task<ActionResult<Guid>> CreateOrder([FromBody] CreateOrderCommand createOrderCommand)
         {

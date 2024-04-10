@@ -11,5 +11,7 @@ namespace TicketManagementSystemAPI.Application.Contracts.Identity
     {
         Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request);
         Task<RegistrationResponse> RegisterAsync(RegistrationRequest request);
+        Task UpdateUserAsync(UpdateUserRequest request);
+        Task UpdatePasswordAsync(UpdatePasswordRequest request);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -43,6 +44,7 @@ namespace TicketManagementSystemAPI.Api.Controllers
             return Ok(@event);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("addEvent", Name = "AddEvent")]
         public async Task<ActionResult<Guid>> CreateEvent([FromBody] CreateEventCommand createEventCommand)
         {
@@ -51,18 +53,19 @@ namespace TicketManagementSystemAPI.Api.Controllers
             return Ok(id);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("{EventId}", Name = "UpdateEvent")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
         public async Task<ActionResult> UpdateEvent(UpdateEventCommand updateEventCommand)
         {
-
             await _mediator.Send(updateEventCommand);
 
             return NoContent();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{EventId}", Name = "DeleteEvent")]
         public async Task<ActionResult> DeleteEvent(Guid eventId)
         {
