@@ -20,6 +20,11 @@ namespace TicketManagementSystemAPI.Persistence.Repositories
             return await _dbContext.Orders.Include(x => x.Tickets).ToListAsync();
         }
 
+        public async Task<List<Order>> GetOrdersListWithTicketsByUserIdAsync(Guid userId)
+        {
+            return await _dbContext.Orders.Where(o => o.UserId == userId).Include(x => x.Tickets).ThenInclude(t => t.Event).ToListAsync();
+        }
+
         public async Task<List<Order>> GetPagedOrdersForMonth(DateTime date, int page, int size)
         {
             return await _dbContext.Orders.Where(x => x.CreatedDate.Month == date.Month && x.CreatedDate.Year == date.Year)

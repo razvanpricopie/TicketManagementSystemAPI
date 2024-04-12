@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using TicketManagementSystemAPI.Application.Features.Orders.Commands.CreateOrder;
 using TicketManagementSystemAPI.Application.Features.Orders.Queries.GetOrderDetail;
 using TicketManagementSystemAPI.Application.Features.Orders.Queries.GetOrdersList;
+using TicketManagementSystemAPI.Application.Features.Orders.Queries.GetUserOrderList;
 
 namespace TicketManagementSystemAPI.Api.Controllers
 {
@@ -44,13 +45,25 @@ namespace TicketManagementSystemAPI.Api.Controllers
             return Ok(order);
         }
 
-        [Authorize(Roles = "Admin, User")]
+        [Authorize(Roles = "User")]
         [HttpPost("addOrder", Name = "addOrder")]
         public async Task<ActionResult<Guid>> CreateOrder([FromBody] CreateOrderCommand createOrderCommand)
         {
             Guid id = await _mediator.Send(createOrderCommand);
 
             return Ok(id);
+        }
+
+        [Authorize(Roles = "User")]
+        [HttpGet("allUserOrders/{userId}", Name = "GetAllUserOrders")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<List<UserOrderListVm>>> GetAllUserOrders(Guid userId)
+        {
+            GetUserOrdersListQuery getUserOrdersListQuery = new GetUserOrdersListQuery() { UserId = userId };
+            
+            List<UserOrderListVm> userOrders = await _mediator.Send(getUserOrdersListQuery);
+
+            return Ok(userOrders);
         }
     }
 }
