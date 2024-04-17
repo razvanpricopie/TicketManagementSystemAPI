@@ -12,6 +12,6 @@ namespace TicketManagementSystemAPI.Application.Features.Orders.Queries.GetUserO
         public int Quantity { get; set; }
         public int Price { get; set; }
         public Guid EventId { get; set; }
-        public EventDto Event { get; set; }
+        public TicketEventDto Event { get; set; }
     }
 }

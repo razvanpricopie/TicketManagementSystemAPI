@@ -28,7 +28,7 @@ namespace TicketManagementSystemAPI.Application.Features.Events.Commands.CreateE
 
         public async Task<Guid> Handle(CreateEventCommand request, CancellationToken cancellationToken)
         {
-             CreateEventCommandValidator validator = new CreateEventCommandValidator(_eventRepository);
+            CreateEventCommandValidator validator = new CreateEventCommandValidator(_eventRepository);
             ValidationResult validationResult = await validator.ValidateAsync(request);
 
             if (validationResult.Errors.Count > 0)

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,7 +14,7 @@ namespace TicketManagementSystemAPI.Application.Features.Events.Commands.CreateE
         public DateTime Date { get; set; }
         public string Description { get; set; }
         public string Location { get; set; }
-        public string ImageUrl { get; set; }
+        public IFormFile Image { get; set; }
         public Guid CategoryId { get; set; }
 
         public override string ToString()

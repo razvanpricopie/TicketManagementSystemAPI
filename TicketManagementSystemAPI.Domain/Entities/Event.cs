@@ -14,7 +14,7 @@ namespace TicketManagementSystemAPI.Domain.Entities
         public DateTime Date { get; set; }
         public string Description { get; set; }
         public string Location { get; set; }
-        public string ImageUrl { get; set; }
+        public byte[] Image { get; set; }
         public Guid CategoryId { get; set; }
         public Category Category { get; set; }
     }

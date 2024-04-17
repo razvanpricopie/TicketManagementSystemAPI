@@ -46,7 +46,7 @@ namespace TicketManagementSystemAPI.Api.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPost("addEvent", Name = "AddEvent")]
-        public async Task<ActionResult<Guid>> CreateEvent([FromBody] CreateEventCommand createEventCommand)
+        public async Task<ActionResult<Guid>> CreateEvent([FromForm] CreateEventCommand createEventCommand)
         {
             Guid id = await _mediator.Send(createEventCommand);
 
@@ -58,7 +58,7 @@ namespace TicketManagementSystemAPI.Api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> UpdateEvent(UpdateEventCommand updateEventCommand)
+        public async Task<ActionResult> UpdateEvent([FromForm] UpdateEventCommand updateEventCommand)
         {
             await _mediator.Send(updateEventCommand);
 

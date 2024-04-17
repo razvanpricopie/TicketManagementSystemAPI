@@ -65,7 +65,7 @@ namespace TicketManagementSystemAPI.Persistence
                 Artist = "John Egbert",
                 Date = DateTime.Now.AddMonths(6),
                 Description = "Join John for his farwell tour across 15 continents. John really needs no introduction since he has already mesmerized the world with his banjo.",
-                ImageUrl = "https://gillcleerenpluralsight.blob.core.windows.net/files/GloboTicket/banjo.jpg",
+                //Image = "https://gillcleerenpluralsight.blob.core.windows.net/files/GloboTicket/banjo.jpg",
                 CategoryId = concertGuid
             });
 
@@ -77,7 +77,7 @@ namespace TicketManagementSystemAPI.Persistence
                 Artist = "Michael Johnson",
                 Date = DateTime.Now.AddMonths(9),
                 Description = "Michael Johnson doesn't need an introduction. His 25 concert across the globe last year were seen by thousands. Can we add you to the list?",
-                ImageUrl = "https://gillcleerenpluralsight.blob.core.windows.net/files/GloboTicket/michael.jpg",
+                //Image = "https://gillcleerenpluralsight.blob.core.windows.net/files/GloboTicket/michael.jpg",
                 CategoryId = concertGuid
             });
 
@@ -89,7 +89,7 @@ namespace TicketManagementSystemAPI.Persistence
                 Artist = "DJ 'The Mike'",
                 Date = DateTime.Now.AddMonths(4),
                 Description = "DJs from all over the world will compete in this epic battle for eternal fame.",
-                ImageUrl = "https://gillcleerenpluralsight.blob.core.windows.net/files/GloboTicket/dj.jpg",
+                //Image = "https://gillcleerenpluralsight.blob.core.windows.net/files/GloboTicket/dj.jpg",
                 CategoryId = concertGuid
             });
 
@@ -101,7 +101,7 @@ namespace TicketManagementSystemAPI.Persistence
                 Artist = "Manuel Santinonisi",
                 Date = DateTime.Now.AddMonths(4),
                 Description = "Get on the hype of Spanish Guitar concerts with Manuel.",
-                ImageUrl = "https://gillcleerenpluralsight.blob.core.windows.net/files/GloboTicket/guitar.jpg",
+                //Image = "https://gillcleerenpluralsight.blob.core.windows.net/files/GloboTicket/guitar.jpg",
                 CategoryId = concertGuid
             });
 
@@ -113,7 +113,7 @@ namespace TicketManagementSystemAPI.Persistence
                 Artist = "Many",
                 Date = DateTime.Now.AddMonths(10),
                 Description = "The best tech conference in the world",
-                ImageUrl = "https://gillcleerenpluralsight.blob.core.windows.net/files/GloboTicket/conf.jpg",
+                //Image = "https://gillcleerenpluralsight.blob.core.windows.net/files/GloboTicket/conf.jpg",
                 CategoryId = conferenceGuid
             });
 
@@ -125,7 +125,7 @@ namespace TicketManagementSystemAPI.Persistence
                 Artist = "Nick Sailor",
                 Date = DateTime.Now.AddMonths(8),
                 Description = "The critics are over the moon and so will you after you've watched this sing and dance extravaganza written by Nick Sailor, the man from 'My dad and sister'.",
-                ImageUrl = "https://gillcleerenpluralsight.blob.core.windows.net/files/GloboTicket/musical.jpg",
+                //Image = "https://gillcleerenpluralsight.blob.core.windows.net/files/GloboTicket/musical.jpg",
                 CategoryId = musicalGuid
             });
 
@@ -156,41 +156,41 @@ namespace TicketManagementSystemAPI.Persistence
                 UserId = Guid.Parse("{d97a15fc-0d32-41c6-9ddf-62f0735c4c1c}")
             });
 
-            modelBuilder.Entity<Ticket>().HasData(new Ticket
-            {
-                TicketId = Guid.Parse("{095d3fd9-9566-4614-9be9-1551757fbc21}"),
-                EventId = Guid.Parse("{EE272F8B-6096-4CB6-8625-BB4BB2D89E8B}"),
-                OrderId = Guid.Parse("{d197c147-0be8-4955-9f7a-e491bc080895}"),
-                Price = 65,
-                Quantity = 4
-            });
+            //modelBuilder.Entity<Ticket>().HasData(new Ticket
+            //{
+            //    TicketId = Guid.Parse("{095d3fd9-9566-4614-9be9-1551757fbc21}"),
+            //    EventId = Guid.Parse("{EE272F8B-6096-4CB6-8625-BB4BB2D89E8B}"),
+            //    OrderId = Guid.Parse("{d197c147-0be8-4955-9f7a-e491bc080895}"),
+            //    Price = 65,
+            //    Quantity = 4
+            //});
 
-            modelBuilder.Entity<Ticket>().HasData(new Ticket
-            {
-                TicketId = Guid.Parse("{85618527-db95-474e-b0fd-44de0bb11c36}"),
-                EventId = Guid.Parse("{1BABD057-E980-4CB3-9CD2-7FDD9E525668}"),
-                OrderId = Guid.Parse("{d197c147-0be8-4955-9f7a-e491bc080895}"),
-                Price = 400,
-                Quantity = 1
-            });
+            //modelBuilder.Entity<Ticket>().HasData(new Ticket
+            //{
+            //    TicketId = Guid.Parse("{85618527-db95-474e-b0fd-44de0bb11c36}"),
+            //    EventId = Guid.Parse("{1BABD057-E980-4CB3-9CD2-7FDD9E525668}"),
+            //    OrderId = Guid.Parse("{d197c147-0be8-4955-9f7a-e491bc080895}"),
+            //    Price = 400,
+            //    Quantity = 1
+            //});
 
-            modelBuilder.Entity<Ticket>().HasData(new Ticket
-            {
-                TicketId = Guid.Parse("{2ba49616-c284-42c0-b883-487910d8eca0}"),
-                EventId = Guid.Parse("{ADC42C09-08C1-4D2C-9F96-2D15BB1AF299}"),
-                OrderId = Guid.Parse("{742b3685-fea6-4b34-b0f1-f79e6845a44d}"),
-                Price = 135,
-                Quantity = 1
-            });
+            //modelBuilder.Entity<Ticket>().HasData(new Ticket
+            //{
+            //    TicketId = Guid.Parse("{2ba49616-c284-42c0-b883-487910d8eca0}"),
+            //    EventId = Guid.Parse("{ADC42C09-08C1-4D2C-9F96-2D15BB1AF299}"),
+            //    OrderId = Guid.Parse("{742b3685-fea6-4b34-b0f1-f79e6845a44d}"),
+            //    Price = 135,
+            //    Quantity = 1
+            //});
 
-            modelBuilder.Entity<Ticket>().HasData(new Ticket
-            {
-                TicketId = Guid.Parse("{997da3fc-168a-4ebb-b8b0-f8727ddb6f34}"),
-                EventId = Guid.Parse("{3448D5A4-0F72-4DD7-BF15-C14A46B26C00}"),
-                OrderId = Guid.Parse("{94dc670d-da05-4777-b647-bf6530d00c74}"),
-                Price = 85,
-                Quantity = 1
-            });
+            //modelBuilder.Entity<Ticket>().HasData(new Ticket
+            //{
+            //    TicketId = Guid.Parse("{997da3fc-168a-4ebb-b8b0-f8727ddb6f34}"),
+            //    EventId = Guid.Parse("{3448D5A4-0F72-4DD7-BF15-C14A46B26C00}"),
+            //    OrderId = Guid.Parse("{94dc670d-da05-4777-b647-bf6530d00c74}"),
+            //    Price = 85,
+            //    Quantity = 1
+            //});
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())

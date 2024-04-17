@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using TicketManagementSystemAPI.Application.Features.Categories.Commands.CreateCategory;
 using TicketManagementSystemAPI.Application.Features.Categories.Commands.UpdateCategory;
@@ -24,13 +26,13 @@ namespace TicketManagementSystemAPI.Application.Profiles
     {
         public MappingProfile()
         {
-            CreateMap<Event, EventListVm>().ReverseMap();
-            CreateMap<Event, EventDetailVm>().ReverseMap();
-            CreateMap<Event, CreateEventCommand>().ReverseMap();
-            CreateMap<Event, UpdateEventCommand>().ReverseMap();
-            CreateMap<Event, Features.Categories.Queries.GetCategoriesListWithEvents.CategoryEventDto>().ReverseMap();
-            CreateMap<Event, Features.Categories.Queries.GetCategoryWithEvents.CategoryEventDto>().ReverseMap();
-            CreateMap<Event, EventDto>();
+            CreateMap<Event, EventListVm>();
+            CreateMap<Event, EventDetailVm>();
+            CreateMap<CreateEventCommand, Event>().ForMember(dest => dest.Image, opt => opt.MapFrom(src => ConvertFormFileToByteArray(src.Image)));
+            CreateMap<UpdateEventCommand, Event>().ForMember(dest => dest.Image, opt => opt.MapFrom(src => ConvertFormFileToByteArray(src.Image)));
+            CreateMap<Event, Features.Categories.Queries.GetCategoriesListWithEvents.CategoryEventDto>();
+            CreateMap<Event, Features.Categories.Queries.GetCategoryWithEvents.CategoryEventDto>();
+            CreateMap<Event, TicketEventDto>();
 
             CreateMap<Category, CategoryDto>();
             CreateMap<Category, CategoryListVm>();
@@ -45,11 +47,21 @@ namespace TicketManagementSystemAPI.Application.Profiles
             CreateMap<Order, OrderDetailVm>();
             CreateMap<CreateOrderCommand, Order>();
 
-            CreateMap<Ticket, Features.Orders.Commands.CreateOrder.TicketDto>().ReverseMap();
-            CreateMap<Ticket, Features.Orders.Queries.GetOrdersList.TicketDto>().ReverseMap();
-            CreateMap<Ticket, Features.Orders.Queries.GetUserOrderList.TicketDto>().ReverseMap();
+            CreateMap<Ticket, Features.Orders.Commands.CreateOrder.TicketDto>();
+            CreateMap<Ticket, Features.Orders.Queries.GetOrdersList.TicketDto>();
+            CreateMap<Ticket, Features.Orders.Queries.GetUserOrderList.TicketDto>();
             CreateMap<Ticket, Features.Orders.Queries.GetOrderDetail.TicketDto>()
                 .ForMember(dto => dto.EventName, opt => opt.MapFrom(t => t.Event.Name));
+        }
+
+        private byte[] ConvertFormFileToByteArray(IFormFile file)
+        {
+            if (file == null)
+                return null;
+
+            using var memoryStream = new MemoryStream();
+            file.CopyTo(memoryStream);
+            return memoryStream.ToArray();
         }
     }
 }
