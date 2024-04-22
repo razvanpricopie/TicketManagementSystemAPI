@@ -34,7 +34,7 @@ namespace TicketManagementSystemAPI.Persistence.Repositories
 
             if (category != null && !includePassedEvents)
             {
-                category.Events.ToList().RemoveAll(c => c.Date < DateTime.Today);
+                category.Events = category.Events.Where(e => e.Date >= DateTime.Today).ToList();
             }
 
             return category;
