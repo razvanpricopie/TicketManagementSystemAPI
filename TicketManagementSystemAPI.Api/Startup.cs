@@ -15,6 +15,7 @@ using TicketManagementSystemAPI.Application;
 using TicketManagementSystemAPI.Infrastructure;
 using TicketManagementSystemAPI.Persistence;
 using TicketManagementSystemAPI.Identity;
+using TicketManagementSystemAPI.OpenAI;
 
 namespace TicketManagementSystemAPI.Api
 {
@@ -34,6 +35,7 @@ namespace TicketManagementSystemAPI.Api
             services.AddInfrastructureServices(Configuration);
             services.AddPersistenceServices(Configuration);
             services.AddIdentityServices(Configuration);
+            services.AddOpenAIServices(Configuration);
 
             services.AddControllers();
 
