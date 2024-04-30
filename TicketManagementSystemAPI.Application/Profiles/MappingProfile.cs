@@ -18,6 +18,7 @@ using TicketManagementSystemAPI.Application.Features.Orders.Commands.CreateOrder
 using TicketManagementSystemAPI.Application.Features.Orders.Queries.GetOrderDetail;
 using TicketManagementSystemAPI.Application.Features.Orders.Queries.GetOrdersList;
 using TicketManagementSystemAPI.Application.Features.Orders.Queries.GetUserOrderList;
+using TicketManagementSystemAPI.Application.Models.OpenAI;
 using TicketManagementSystemAPI.Domain.Entities;
 
 namespace TicketManagementSystemAPI.Application.Profiles
@@ -33,6 +34,7 @@ namespace TicketManagementSystemAPI.Application.Profiles
             CreateMap<Event, Features.Categories.Queries.GetCategoriesListWithEvents.CategoryEventDto>();
             CreateMap<Event, Features.Categories.Queries.GetCategoryWithEvents.CategoryEventDto>();
             CreateMap<Event, TicketEventDto>();
+            CreateMap<Event, OpenAIEventListResponse>();
 
             CreateMap<Category, CategoryDto>();
             CreateMap<Category, CategoryListVm>();

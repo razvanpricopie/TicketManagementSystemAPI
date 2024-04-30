@@ -27,6 +27,13 @@ namespace TicketManagementSystemAPI.Persistence.Repositories
             return await _dbContext.Set<T>().ToListAsync();
         }
 
+        public async Task<IReadOnlyList<T>> ListFiveRandomAsync()
+        {
+            var tickets = await _dbContext.Set<T>().OrderBy(x => Guid.NewGuid()).Take(5).ToListAsync();
+
+            return tickets;
+        }
+
         public async Task<T> AddAsync(T entity)
         {
             await _dbContext.Set<T>().AddAsync(entity);

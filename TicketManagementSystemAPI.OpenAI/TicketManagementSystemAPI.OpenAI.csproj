@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TicketManagementSystemAPI.Application\TicketManagementSystemAPI.Application.csproj" />
+    <ProjectReference Include="..\TicketManagementSystemAPI.Persistence\TicketManagementSystemAPI.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

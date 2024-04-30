@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TicketManagementSystemAPI.Application.Contracts.OpenAI;
+using TicketManagementSystemAPI.Application.Models.OpenAI;
+using TicketManagementSystemAPI.Domain.Entities;
 
 namespace TicketManagementSystemAPI.Api.Controllers
 {
@@ -16,12 +19,20 @@ namespace TicketManagementSystemAPI.Api.Controllers
             _openAIService = openAIService;
         }
 
-        [HttpPost("completeSentence", Name = "CompleteSentence")]
-        public async Task<ActionResult> CompleteSentence([FromBody] string text)
+        [HttpPost("mostTenBoughtEvents", Name = "GetMostTenBoughtEvents")]
+        public async Task<ActionResult<List<OpenAIEventListResponse>>> GetMostTenBoughtEvents()
         {
-            string result = await _openAIService.CompleteSentence(text);
+            List<OpenAIEventListResponse> events = await _openAIService.GetMostTenBoughtEvents();
 
-            return Ok(result);
+            return Ok(events);
+        }
+
+        [HttpPost("lastTenAddedEvents", Name = "GetLastTenAddedEvents")]
+        public async Task<ActionResult<List<OpenAIEventListResponse>>> GetLastTenAddedEvents()
+        {
+            List<OpenAIEventListResponse> events = await _openAIService.GetLastTenAddedEvents();
+
+            return Ok(events);
         }
     }
 }

@@ -22,5 +22,12 @@ namespace TicketManagementSystemAPI.Persistence.Repositories
 
             return Task.FromResult(matches);
         }
+
+        public async Task<IReadOnlyList<Event>> ListBySqlQueryAsync(string query)
+        {
+            var result = await _dbContext.Events.FromSqlRaw(query).ToListAsync();
+
+            return result;
+        }
     }
 }
