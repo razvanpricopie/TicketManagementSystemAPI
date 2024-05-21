@@ -47,9 +47,9 @@ namespace TicketManagementSystemAPI.Application.Profiles
             CreateMap<Order, OrderListVm>().ForMember(dto => dto.NumberOfTickets, opt => opt.MapFrom(o => o.Tickets.Count));
             CreateMap<Order, UserOrderListVm>();
             CreateMap<Order, OrderDetailVm>();
-            CreateMap<CreateOrderCommand, Order>();
+            CreateMap<CreateOrderCommand, Order>().ReverseMap();
 
-            CreateMap<Ticket, Features.Orders.Commands.CreateOrder.TicketDto>();
+            CreateMap<Ticket, Features.Orders.Commands.CreateOrder.TicketDto>().ReverseMap();
             CreateMap<Ticket, Features.Orders.Queries.GetOrdersList.TicketDto>();
             CreateMap<Ticket, Features.Orders.Queries.GetUserOrderList.TicketDto>();
             CreateMap<Ticket, Features.Orders.Queries.GetOrderDetail.TicketDto>()
