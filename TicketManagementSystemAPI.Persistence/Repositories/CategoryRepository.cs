@@ -40,13 +40,11 @@ namespace TicketManagementSystemAPI.Persistence.Repositories
             return category;
         }
 
-        public Task<bool> IsCategoryNameUnique(string name)
+        public Task<bool> IsCategoryNameUnique(string name, Guid? categoryId = null)
         {
-            bool matches = _dbContext.Categories.Any(c => c.Name.Equals(name));
+            bool matches = _dbContext.Categories.Any(c => c.Name.Equals(name) && c.CategoryId != categoryId);
 
             return Task.FromResult(matches);
         }
-
-        //public async Task DeleteCategories
     }
 }

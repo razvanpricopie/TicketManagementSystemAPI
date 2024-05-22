@@ -30,7 +30,7 @@ namespace TicketManagementSystemAPI.Application.Features.Categories.Commands.Upd
 
         private async Task<bool> CategoryNameUniqueAsync(UpdateCategoryCommand c, CancellationToken cancellationToken)
         {
-            return !(await _categoryRepository.IsCategoryNameUnique(c.Name));
+            return !(await _categoryRepository.IsCategoryNameUnique(c.Name, c.CategoryId));
         }
     }
 }

@@ -38,20 +38,20 @@ namespace TicketManagementSystemAPI.Application.Profiles
             CreateMap<Category, CategoryListVm>();
             CreateMap<Category, CategoryEventListVm>();
             CreateMap<Category, CategoryWithEventsVm>();
-            CreateMap<Category, CreateCategoryCommand>();
+            CreateMap<CreateCategoryCommand, Category>().ForMember(dest => dest.Image, opt => opt.MapFrom(src => ConvertFormFileToByteArray(src.Image)));
             CreateMap<Category, CreateCategoryDto>();
-            CreateMap<UpdateCategoryCommand, Category>();
+            CreateMap<UpdateCategoryCommand, Category>().ForMember(dest => dest.Image, opt => opt.MapFrom(src => ConvertFormFileToByteArray(src.Image))); ;
 
             CreateMap<Order, OrderListVm>().ForMember(dto => dto.NumberOfTickets, opt => opt.MapFrom(o => o.Tickets.Count));
             CreateMap<Order, UserOrderListVm>();
             CreateMap<Order, OrderDetailVm>();
             CreateMap<CreateOrderCommand, Order>();
 
-            CreateMap<Ticket, Features.Orders.Commands.CreateOrder.TicketDto>();
-            CreateMap<Ticket, Features.Orders.Queries.GetOrdersList.TicketDto>();
-            CreateMap<Ticket, Features.Orders.Queries.GetUserOrderList.TicketDto>();
+            CreateMap<Ticket, Features.Orders.Commands.CreateOrder.TicketDto>().ReverseMap();
+            CreateMap<Ticket, Features.Orders.Queries.GetOrdersList.TicketDto>().ReverseMap();
+            CreateMap<Ticket, Features.Orders.Queries.GetUserOrderList.TicketDto>().ReverseMap();
             CreateMap<Ticket, Features.Orders.Queries.GetOrderDetail.TicketDto>()
-                .ForMember(dto => dto.EventName, opt => opt.MapFrom(t => t.Event.Name));
+                .ForMember(dto => dto.EventName, opt => opt.MapFrom(t => t.Event.Name)).ReverseMap();
         }
 
         private byte[] ConvertFormFileToByteArray(IFormFile file)

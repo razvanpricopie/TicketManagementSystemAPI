@@ -60,7 +60,7 @@ namespace TicketManagementSystemAPI.Api.Controllers
         [HttpPost("addcategory", Name = "AddCategory")]
         [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<CreateCategoryCommandResponse>> CreateCategory([FromBody] CreateCategoryCommand createCategoryCommand)
+        public async Task<ActionResult<CreateCategoryCommandResponse>> CreateCategory([FromForm] CreateCategoryCommand createCategoryCommand)
         {
             CreateCategoryCommandResponse response = await _mediator.Send(createCategoryCommand);
 
@@ -72,7 +72,7 @@ namespace TicketManagementSystemAPI.Api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> UpdateCategory([FromBody] UpdateCategoryCommand updateCategoryCommand)
+        public async Task<ActionResult> UpdateCategory([FromForm] UpdateCategoryCommand updateCategoryCommand)
         {
             await _mediator.Send(updateCategoryCommand);
 
