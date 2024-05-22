@@ -10,6 +10,6 @@ namespace TicketManagementSystemAPI.Application.Contracts.Persistence
     {
         Task<List<Category>> GetCategoriesWithEventsAsync(bool includePassedEvents);
         Task<Category> GetCategoryWithEventsAsync(Guid categoryId, bool includePassedEvents);
-        Task<bool> IsCategoryNameUnique(string name);
+        Task<bool> IsCategoryNameUnique(string name, Guid? categoryId = null);
     }
 }

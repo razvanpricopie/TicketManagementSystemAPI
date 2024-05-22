@@ -41,9 +41,16 @@ namespace TicketManagementSystemAPI.Application.Features.Categories.Commands.Cre
             }
             if (createCategoryCommandResponse.Success)
             {
-                Category category = new Category() { Name = request.Name };
-                category = await _categoryRepository.AddAsync(category);
-                createCategoryCommandResponse.Category = _mapper.Map<CreateCategoryDto>(category);
+                //Category category = new Category() { 
+                //    Name = request.Name,
+                //    Image = request.Image
+                //};
+                //category = await _categoryRepository.AddAsync(category);
+                //createCategoryCommandResponse.Category = _mapper.Map<CreateCategoryDto>(category);
+
+                Category category = _mapper.Map<Category>(request);
+
+                await _categoryRepository.AddAsync(category);
             }
 
             return createCategoryCommandResponse;

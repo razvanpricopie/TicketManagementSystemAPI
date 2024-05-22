@@ -9,6 +9,7 @@ namespace TicketManagementSystemAPI.Domain.Entities
     {
         public Guid CategoryId { get; set; }
         public string Name { get; set; }
+        public byte[] Image { get; set; }
         public ICollection<Event> Events { get; set; }
     }
 }
