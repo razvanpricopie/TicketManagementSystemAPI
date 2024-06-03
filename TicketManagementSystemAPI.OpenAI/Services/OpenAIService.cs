@@ -44,59 +44,67 @@ namespace TicketManagementSystemAPI.OpenAI.Services
 
         public async Task<List<OpenAIEventListResponse>> GetMostTenBoughtEvents()
         {
-            string methodPrompt = "I want to fetch the most bought ten events";
-         
-            string systemPrompt = CreateSystemPrompt();
-            string userPrompt = ConvertEventDataToPrompt(methodPrompt).Result;
+            string userPrompt = "I want to fetch the most bought ten events";
+
+            string systemPrompt = CreateSystemBasePrompt();
+            string systemPromptWithConvertedData = CreateSystemPromptWithConvertedData(false).Result;
 
             OpenAIAPI openAIApi = new OpenAIAPI(_openAISettings.Key);
 
-            List<Event> eventBasedOnGeneratedQuery = await GenerateEventsBasedOnSqlQuery(openAIApi, systemPrompt, userPrompt);
+            List<Event> eventBasedOnGeneratedQuery = await GenerateEventsBasedOnSqlQuery(openAIApi, systemPrompt, systemPromptWithConvertedData, userPrompt);
 
             return _mapper.Map<List<OpenAIEventListResponse>>(eventBasedOnGeneratedQuery);
         }
 
         public async Task<List<OpenAIEventListResponse>> GetLastTenAddedEvents()
         {
-            string methodPrompt = "I want to fetch the last ten added events - based on CreatedDate property";
+            string userPrompt = "I want to fetch the last ten added events - based on CreatedDate property";
 
-            string systemPrompt = CreateSystemPrompt();
-            string userPrompt = ConvertEventDataToPrompt(methodPrompt).Result;
+            string systemPrompt = CreateSystemBasePrompt();
+            string systemPromptWithConvertedData = CreateSystemPromptWithConvertedData(false).Result;
 
             OpenAIAPI openAIApi = new OpenAIAPI(_openAISettings.Key);
 
-            List<Event> eventBasedOnGeneratedQuery = await GenerateEventsBasedOnSqlQuery(openAIApi, systemPrompt, userPrompt);
+            List<Event> eventBasedOnGeneratedQuery = await GenerateEventsBasedOnSqlQuery(openAIApi, systemPrompt, systemPromptWithConvertedData, userPrompt);
 
             return _mapper.Map<List<OpenAIEventListResponse>>(eventBasedOnGeneratedQuery);
         }
 
         public async Task<List<OpenAIEventListResponse>> GetTenEventsBasedOnUserOrders(Guid userId)
         {
-            string methodPrompt = $"Based on the user's existing orders - user Id: {userId} - and the categories to which the events belong - fetch up to ten events from those categories. But not those events already exist in user's orders";
+            string userPrompt = $"Based on the user's existing orders - user Id: {userId} - and the categories to which the events belong - fetch up to ten events from those categories. Please do not include user's already bought events";
 
-            string systemPrompt = CreateSystemPrompt();
-            string userPrompt = ConvertEventDataToPrompt(methodPrompt, true).Result;
+            string systemPrompt = CreateSystemBasePrompt();
+            string systemPromptWithConvertedData = CreateSystemPromptWithConvertedData(true).Result;
 
             OpenAIAPI openAIApi = new OpenAIAPI(_openAISettings.Key);
 
-            List<Event> eventBasedOnGeneratedQuery = await GenerateEventsBasedOnSqlQuery(openAIApi, systemPrompt, userPrompt);
+            List<Event> eventBasedOnGeneratedQuery = await GenerateEventsBasedOnSqlQuery(openAIApi, systemPrompt, systemPromptWithConvertedData, userPrompt);
 
             return _mapper.Map<List<OpenAIEventListResponse>>(eventBasedOnGeneratedQuery);
         }
 
-        private async Task<List<Event>> GenerateEventsBasedOnSqlQuery(OpenAIAPI openAIApi, string systemPrompt, string userPrompt, string query = null, string errorMessage = null)
+        private async Task<List<Event>> GenerateEventsBasedOnSqlQuery(OpenAIAPI openAIApi, string systemBasedPrompt, string systemPromptWithConvertedData, string userPrompt, string queryWithError = null, string errorMessage = null)
         {
             List<Event> eventBasedOnGeneratedQuery;
 
             if (errorMessage != null)
             {
                 StringBuilder promptBuilder = new StringBuilder();
-                promptBuilder.Append(userPrompt);
+                promptBuilder.Append(systemPromptWithConvertedData);
                 promptBuilder.AppendLine();
-                promptBuilder.AppendLine("Your last generated query result in some errors.");
-                promptBuilder.AppendLine($"This is the query:{query}");
+                promptBuilder.AppendLine("Your last generated query contains errors.");
+
+                if (queryWithError != null)
+                {
+                    promptBuilder.AppendLine($"This is the query:{queryWithError}");
+                    promptBuilder.AppendLine();
+
+                }
+
+                promptBuilder.AppendLine($"This is the error: {errorMessage}");
                 promptBuilder.AppendLine();
-                promptBuilder.AppendLine($"This is the issue/error: {errorMessage}");
+                promptBuilder.AppendLine($"I want you to fix this and generate a correct query");
                 userPrompt = promptBuilder.ToString();
             }
 
@@ -104,11 +112,17 @@ namespace TicketManagementSystemAPI.OpenAI.Services
             {
                 Model = OpenAI_API.Models.Model.ChatGPTTurbo,
                 Temperature = 0,
+                FrequencyPenalty = 0,
+                PresencePenalty = 0,
                 Messages = new List<ChatMessage>
                 {
                     new ChatMessage
                     {
-                        Role = ChatMessageRole.System, TextContent = systemPrompt
+                        Role = ChatMessageRole.System, TextContent = systemBasedPrompt
+                    },
+                    new ChatMessage
+                    {
+                        Role = ChatMessageRole.System, TextContent = systemPromptWithConvertedData
                     },
                     new ChatMessage
                     {
@@ -123,20 +137,20 @@ namespace TicketManagementSystemAPI.OpenAI.Services
             }
             catch (Exception ex)
             {
-                return await GenerateEventsBasedOnSqlQuery(openAIApi, systemPrompt, userPrompt, sqlQueriesAsChoiceList.ToString(), ex.Message);
+                return await GenerateEventsBasedOnSqlQuery(openAIApi, systemBasedPrompt, systemPromptWithConvertedData, userPrompt, sqlQueriesAsChoiceList.ToString(), ex.Message);
             }
 
-            if(eventBasedOnGeneratedQuery.Count == 0)
+            if (eventBasedOnGeneratedQuery.Count == 0)
             {
                 errorMessage = "No events found based on the generated query. Try a different approach based on all provided informations.";
 
-                return await GenerateEventsBasedOnSqlQuery(openAIApi, systemPrompt, userPrompt, sqlQueriesAsChoiceList.ToString(), errorMessage);
+                return await GenerateEventsBasedOnSqlQuery(openAIApi, systemBasedPrompt, systemPromptWithConvertedData, userPrompt, sqlQueriesAsChoiceList.ToString(), errorMessage);
             }
 
             return eventBasedOnGeneratedQuery;
         }
 
-        private string CreateSystemPrompt()
+        private string CreateSystemBasePrompt()
         {
             StringBuilder promptBuilder = new StringBuilder();
             promptBuilder.AppendLine("You are an SQL generator that only returns SQL sequel statements and no natural language.");
@@ -148,9 +162,12 @@ namespace TicketManagementSystemAPI.OpenAI.Services
             return promptBuilder.ToString();
         }
 
-        private async Task<string> ConvertEventDataToPrompt(string userPrompt, bool isUserRelated = false)
+        private async Task<string> CreateSystemPromptWithConvertedData(bool isUserRelated = false)
         {
             StringBuilder promptBuilder = new StringBuilder();
+
+            promptBuilder.AppendLine("Here is the structure and some data of every table to help you to generate correct queries.");
+            promptBuilder.AppendLine();
 
             promptBuilder.AppendLine(typeof(Event).Name + " table name: [TicketManagementSystemDb].[dbo].[Events]");
             promptBuilder.AppendLine(typeof(Event).Name + " entity structure:");
@@ -235,8 +252,6 @@ namespace TicketManagementSystemAPI.OpenAI.Services
             }
 
             promptBuilder.AppendLine();
-
-            promptBuilder.AppendLine($"User prompt: {userPrompt}");
 
             return promptBuilder.ToString();
         }
