@@ -22,5 +22,36 @@ namespace TicketManagementSystemAPI.Persistence.Repositories
 
             return Task.FromResult(matches);
         }
+
+        public async Task<EventLikeStatus> GetUserLikeEventStatusByUserAndEventIds(Guid userId, Guid eventId)
+        {
+            return await _dbContext.EventsLikeStatuses.FirstOrDefaultAsync(l => l.UserId == userId && l.EventId == eventId);
+        }
+
+        public async Task<EventLikeStatus> GetUserLikeEventStatusById(Guid id)
+        {
+            return await _dbContext.EventsLikeStatuses.FindAsync(id);
+        }
+
+        public async Task CreateUserLikeEventStatus(EventLikeStatus like)
+        {
+            await _dbContext.EventsLikeStatuses.AddAsync(like);
+
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteUserLikeEventStatus(EventLikeStatus like)
+        {
+            _dbContext.EventsLikeStatuses.Remove(like);
+
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public Task<bool> IsUserAlreadyRatedEvent(Guid userId, Guid eventId)
+        {
+            bool isAlreadyLiked = _dbContext.EventsLikeStatuses.Any(l => l.EventId == eventId && l.UserId == userId);
+
+            return Task.FromResult(isAlreadyLiked);
+        }
     }
 }

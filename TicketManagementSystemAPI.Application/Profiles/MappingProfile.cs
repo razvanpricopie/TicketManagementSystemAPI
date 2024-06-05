@@ -11,9 +11,12 @@ using TicketManagementSystemAPI.Application.Features.Categories.Queries.GetCateg
 using TicketManagementSystemAPI.Application.Features.Categories.Queries.GetCategoryWithEvents;
 using TicketManagementSystemAPI.Application.Features.Events.Commands.CreateEvent;
 using TicketManagementSystemAPI.Application.Features.Events.Commands.DeleteEvent;
+using TicketManagementSystemAPI.Application.Features.Events.Commands.DislikeEvent;
+using TicketManagementSystemAPI.Application.Features.Events.Commands.LikeEvent;
 using TicketManagementSystemAPI.Application.Features.Events.Commands.UpdateEvent;
 using TicketManagementSystemAPI.Application.Features.Events.Queries.GetEventDetail;
 using TicketManagementSystemAPI.Application.Features.Events.Queries.GetEventsList;
+using TicketManagementSystemAPI.Application.Features.Events.Queries.GetUserEventRateStatus;
 using TicketManagementSystemAPI.Application.Features.Orders.Commands.CreateOrder;
 using TicketManagementSystemAPI.Application.Features.Orders.Queries.GetOrderDetail;
 using TicketManagementSystemAPI.Application.Features.Orders.Queries.GetOrdersList;
@@ -33,6 +36,9 @@ namespace TicketManagementSystemAPI.Application.Profiles
             CreateMap<Event, Features.Categories.Queries.GetCategoriesListWithEvents.CategoryEventDto>();
             CreateMap<Event, Features.Categories.Queries.GetCategoryWithEvents.CategoryEventDto>();
             CreateMap<Event, TicketEventDto>();
+            CreateMap<LikeEventCommand, EventLikeStatus>();
+            CreateMap<DislikeEventCommand, EventLikeStatus>();
+            CreateMap<EventLikeStatus, UserEventLikeStatusVm>();
 
             CreateMap<Category, CategoryDto>();
             CreateMap<Category, CategoryListVm>();
