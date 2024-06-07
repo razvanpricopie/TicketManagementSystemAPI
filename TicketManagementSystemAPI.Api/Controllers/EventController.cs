@@ -13,7 +13,9 @@ using TicketManagementSystemAPI.Application.Features.Events.Commands.UnrateEvent
 using TicketManagementSystemAPI.Application.Features.Events.Commands.UpdateEvent;
 using TicketManagementSystemAPI.Application.Features.Events.Queries.GetEventDetail;
 using TicketManagementSystemAPI.Application.Features.Events.Queries.GetEventsList;
+using TicketManagementSystemAPI.Application.Features.Events.Queries.GetUserDislikedEventsList;
 using TicketManagementSystemAPI.Application.Features.Events.Queries.GetUserEventRateStatus;
+using TicketManagementSystemAPI.Application.Features.Events.Queries.GetUserFavouriteEventsList;
 
 namespace TicketManagementSystemAPI.Api.Controllers
 {
@@ -127,6 +129,28 @@ namespace TicketManagementSystemAPI.Api.Controllers
             await _mediator.Send(deleteEventCommand);
 
             return NoContent();
+        }
+
+        [HttpGet("getUserLikedEvents/{UserId}", Name = "GetUserLikedEvents")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<List<UserLikedEventsListVm>>> GetUserLikedEvents(Guid userId)
+        {
+            GetUserLikedEventsListQuery getUserLikedEventsListQuery = new GetUserLikedEventsListQuery() { UserId = userId };
+
+            List<UserLikedEventsListVm> events = await _mediator.Send(getUserLikedEventsListQuery);
+
+            return Ok(events);
+        }
+
+        [HttpGet("getUserDislikedEvents/{UserId}", Name = "GetUserDislikedEvents")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<List<UserDislikedEventsListVm>>> GetUserDislikedEvents(Guid userId)
+        {
+            GetUserDislikedEventsListQuery getUserDislikedEventsListQuery = new GetUserDislikedEventsListQuery() { UserId = userId };
+
+            List<UserDislikedEventsListVm> events = await _mediator.Send(getUserDislikedEventsListQuery);
+
+            return Ok(events);
         }
     }
 }

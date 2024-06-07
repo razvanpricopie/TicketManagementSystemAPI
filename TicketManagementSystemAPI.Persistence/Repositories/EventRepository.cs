@@ -53,5 +53,12 @@ namespace TicketManagementSystemAPI.Persistence.Repositories
 
             return Task.FromResult(isAlreadyLiked);
         }
+
+        public async Task<IReadOnlyList<Event>> GetUserFavouriteEventsByLikeStatus(Guid userId, bool isLiked)
+        {
+            var userFavouriteEvents = await _dbContext.Events.Where(e => e.Likes.Any(l => l.UserId == userId && l.IsLiked == isLiked)).ToListAsync();
+
+            return userFavouriteEvents;
+        }
     }
 }
