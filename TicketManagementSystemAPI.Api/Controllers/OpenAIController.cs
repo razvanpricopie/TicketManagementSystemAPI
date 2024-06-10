@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TicketManagementSystemAPI.Application.Contracts.OpenAI;
+using TicketManagementSystemAPI.Application.Features.Events.Queries.GetUserFavouriteEventsList;
 using TicketManagementSystemAPI.Application.Features.Orders.Queries.GetUserOrderList;
 using TicketManagementSystemAPI.Application.Models.OpenAI;
 using TicketManagementSystemAPI.Domain.Entities;
@@ -29,7 +30,7 @@ namespace TicketManagementSystemAPI.Api.Controllers
         {
             List<OpenAIEventListResponse> events = await _openAIService.GetMostTenBoughtEvents();
 
-            return Ok(events); 
+            return Ok(events);
         }
 
         [HttpPost("lastTenAddedEvents", Name = "GetLastTenAddedEvents")]
@@ -46,12 +47,37 @@ namespace TicketManagementSystemAPI.Api.Controllers
             GetUserOrdersListQuery getUserOrdersListQuery = new GetUserOrdersListQuery() { UserId = userId };
             List<UserOrderListVm> userOrders = await _mediator.Send(getUserOrdersListQuery);
 
-            if(userOrders.Count == 0)
+            if (userOrders.Count == 0)
             {
                 return Ok();
             }
 
             List<OpenAIEventListResponse> events = await _openAIService.GetTenEventsBasedOnUserOrders(userId);
+
+            return Ok(events);
+        }
+
+        [HttpPost("getTenEventsBasedOnUserLikeStatuses/{userId}", Name = "GetTenEventsBasedOnUserLikeStatuses")]
+        public async Task<ActionResult<List<OpenAIEventListResponse>>> GetTenEventsBasedOnUserLikeStatuses(Guid userId)
+        {
+            GetUserLikedEventsListQuery getUserLikedEventsListQuery = new GetUserLikedEventsListQuery() { UserId = userId };
+
+            List<UserLikedEventsListVm> likedEvents = await _mediator.Send(getUserLikedEventsListQuery);
+
+            if (likedEvents.Count == 0)
+            {
+                return Ok();
+            }
+
+            List<OpenAIEventListResponse> events = await _openAIService.GetTenEventsBasedOnUserLikeStatuses(userId);
+
+            return Ok(events);
+        }
+
+        [HttpPost("getTenEventsBasedOnOtherUsersLikeStatuses/{userId}", Name = "GetTenEventsBasedOnOtherUsersLikeStatuses")]
+        public async Task<ActionResult<List<OpenAIEventListResponse>>> GetTenEventsBasedOnOtherUsersLikeStatuses(Guid userId)
+        {
+            List<OpenAIEventListResponse> events = await _openAIService.GetTenEventsBasedOnOtherUsersLikeStatuses(userId);
 
             return Ok(events);
         }

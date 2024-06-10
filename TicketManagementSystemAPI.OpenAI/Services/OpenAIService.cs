@@ -23,6 +23,8 @@ namespace TicketManagementSystemAPI.OpenAI.Services
 {
     public class OpenAIService : IOpenAIService
     {
+        const int MAX_RECURSION_DEPTH = 5;
+
         private readonly IMapper _mapper;
         private readonly OpenAISettings _openAISettings;
         private readonly TicketManagementSystemDbContext _dbContext;
@@ -72,7 +74,7 @@ namespace TicketManagementSystemAPI.OpenAI.Services
 
         public async Task<List<OpenAIEventListResponse>> GetTenEventsBasedOnUserOrders(Guid userId)
         {
-            string userPrompt = $"Based on the user's existing orders - user Id: {userId} - and the categories to which the events belong - fetch up to ten events from those categories. Please do not include user's already bought events";
+            string userPrompt = $"Based on the user's existing orders - user Id: {userId} - and the categories to which the events belong - fetch up to ten events from those categories. Please do not include user's already bought events. You may use 'Orders' and 'Categories' table for the query";
 
             string systemPrompt = CreateSystemBasePrompt();
             string systemPromptWithConvertedData = CreateSystemPromptWithConvertedData(true).Result;
@@ -84,9 +86,43 @@ namespace TicketManagementSystemAPI.OpenAI.Services
             return _mapper.Map<List<OpenAIEventListResponse>>(eventBasedOnGeneratedQuery);
         }
 
-        private async Task<List<Event>> GenerateEventsBasedOnSqlQuery(OpenAIAPI openAIApi, string systemBasedPrompt, string systemPromptWithConvertedData, string userPrompt, string queryWithError = null, string errorMessage = null)
+        public async Task<List<OpenAIEventListResponse>> GetTenEventsBasedOnUserLikeStatuses(Guid userId)
+        {
+            string userPrompt = $"Based user's event like statuses - user Id: {userId} - and the categories to which the events belong - fetch up to ten events from those categories. Please do not include user's already bought events. You will use 'EventsLikeStatuses' and 'Categories' table in the query";
+            //string userPrompt = $"I want you to fetch up to ten events from same categories, based on what user already liked events. EventsLikeStatuses table contains events liked/disliked by user, and Category contains all categories. Do not include user's already bought events. Do this for userId - ${userId}";
+
+            string systemPrompt = CreateSystemBasePrompt();
+            string systemPromptWithConvertedData = CreateSystemPromptWithConvertedData(true).Result;
+
+            OpenAIAPI openAIApi = new OpenAIAPI(_openAISettings.Key);
+
+            List<Event> eventBasedOnGeneratedQuery = await GenerateEventsBasedOnSqlQuery(openAIApi, systemPrompt, systemPromptWithConvertedData, userPrompt);
+
+            return _mapper.Map<List<OpenAIEventListResponse>>(eventBasedOnGeneratedQuery);
+        }
+
+        public async Task<List<OpenAIEventListResponse>> GetTenEventsBasedOnOtherUsersLikeStatuses(Guid userId)
+        {
+            string userPrompt = $"Based other users' event like statuses and the categories to which the events belong - fetch up to ten events from those categories. Please do not include liked events or already bought events of userId - ${userId}. You will use 'EventsLikeStatuses' and 'Categories' table in the query";
+
+            string systemPrompt = CreateSystemBasePrompt();
+            string systemPromptWithConvertedData = CreateSystemPromptWithConvertedData(true).Result;
+
+            OpenAIAPI openAIApi = new OpenAIAPI(_openAISettings.Key);
+
+            List<Event> eventBasedOnGeneratedQuery = await GenerateEventsBasedOnSqlQuery(openAIApi, systemPrompt, systemPromptWithConvertedData, userPrompt);
+
+            return _mapper.Map<List<OpenAIEventListResponse>>(eventBasedOnGeneratedQuery);
+        }
+
+        private async Task<List<Event>> GenerateEventsBasedOnSqlQuery(OpenAIAPI openAIApi, string systemBasedPrompt, string systemPromptWithConvertedData, string userPrompt, string queryWithError = null, string errorMessage = null, int depth = 0)
         {
             List<Event> eventBasedOnGeneratedQuery;
+
+            if (depth > MAX_RECURSION_DEPTH)
+            {
+                return new List<Event>();
+            }
 
             if (errorMessage != null)
             {
@@ -104,7 +140,7 @@ namespace TicketManagementSystemAPI.OpenAI.Services
 
                 promptBuilder.AppendLine($"This is the error: {errorMessage}");
                 promptBuilder.AppendLine();
-                promptBuilder.AppendLine($"Fix it and generate a correct one");
+                promptBuilder.AppendLine($"Fix it and generate a correct one. Do not repet the same mistake!");
                 userPrompt = promptBuilder.ToString();
             }
 
@@ -112,8 +148,6 @@ namespace TicketManagementSystemAPI.OpenAI.Services
             {
                 Model = OpenAI_API.Models.Model.ChatGPTTurbo,
                 Temperature = 0,
-                FrequencyPenalty = 0,
-                PresencePenalty = 0,
                 Messages = new List<ChatMessage>
                 {
                     new ChatMessage
@@ -137,7 +171,7 @@ namespace TicketManagementSystemAPI.OpenAI.Services
             }
             catch (Exception ex)
             {
-                return await GenerateEventsBasedOnSqlQuery(openAIApi, systemBasedPrompt, systemPromptWithConvertedData, userPrompt, sqlQueriesAsChoiceList.Choices[0].ToString(), ex.Message);
+                return await GenerateEventsBasedOnSqlQuery(openAIApi, systemBasedPrompt, systemPromptWithConvertedData, userPrompt, sqlQueriesAsChoiceList.Choices[0].ToString(), ex.Message, depth + 1);
             }
 
             if (eventBasedOnGeneratedQuery.Count == 0)
@@ -154,7 +188,7 @@ namespace TicketManagementSystemAPI.OpenAI.Services
         {
             StringBuilder promptBuilder = new StringBuilder();
             promptBuilder.AppendLine("You are an SQL generator that only returns SQL sequel statements and no natural language.");
-            promptBuilder.AppendLine("Please return only sql query, no others charachters.");
+            promptBuilder.AppendLine("Please return only sql query, no others charachters or sentences");
             promptBuilder.AppendLine("You won't use SQL aliases, keep columns name as given.");
             promptBuilder.AppendLine("Given the table structure, definitions, some real data and user prompt.");
             promptBuilder.AppendLine("You have to include all entity's columns. If one to one relationship, include only foreign keys. If many-to-many relationship, doesn't include the column");
@@ -232,7 +266,8 @@ namespace TicketManagementSystemAPI.OpenAI.Services
             promptBuilder.AppendLine();
             promptBuilder.AppendLine();
 
-            promptBuilder.AppendLine(typeof(EventLikeStatus).Name + " table name: [TicketManagementSystemDb].[dbo].[Tickets]");
+            promptBuilder.AppendLine(typeof(EventLikeStatus).Name + " table name: [TicketManagementSystemDb].[dbo].[EventsLikeStatuses]");
+            promptBuilder.AppendLine("This table store the events liked/disliked by users. Like means IsLiked=1, Dislike means IsLiked=0");
             promptBuilder.AppendLine(typeof(EventLikeStatus).Name + " entity structure:");
             var eventLikeStatusProperties = typeof(EventLikeStatus).GetProperties();
             foreach (var property in eventLikeStatusProperties)
