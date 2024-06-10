@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TicketManagementSystemAPI.Domain.Entities;
 
 namespace TicketManagementSystemAPI.Identity.Models
 {
@@ -11,5 +12,6 @@ namespace TicketManagementSystemAPI.Identity.Models
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public ICollection<EventLikeStatus> Likes { get; set; }
     }
 }

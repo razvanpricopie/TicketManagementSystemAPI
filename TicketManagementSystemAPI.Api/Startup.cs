@@ -15,6 +15,7 @@ using TicketManagementSystemAPI.Application;
 using TicketManagementSystemAPI.Infrastructure;
 using TicketManagementSystemAPI.Persistence;
 using TicketManagementSystemAPI.Identity;
+using Stripe;
 using TicketManagementSystemAPI.OpenAI;
 
 namespace TicketManagementSystemAPI.Api
@@ -24,6 +25,7 @@ namespace TicketManagementSystemAPI.Api
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            StripeConfiguration.ApiKey = Configuration.GetValue<string>("StripeSettings:SecretKey");
         }
 
         public IConfiguration Configuration { get; }

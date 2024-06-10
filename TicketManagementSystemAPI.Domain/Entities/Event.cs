@@ -17,5 +17,6 @@ namespace TicketManagementSystemAPI.Domain.Entities
         public byte[] Image { get; set; }
         public Guid CategoryId { get; set; }
         public Category Category { get; set; }
+        public ICollection<EventLikeStatus> EventLikeStatuses { get; set; }
     }
 }

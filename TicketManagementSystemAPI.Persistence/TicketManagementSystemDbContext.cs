@@ -19,6 +19,7 @@ namespace TicketManagementSystemAPI.Persistence
         public DbSet<Category> Categories { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<EventLikeStatus> EventsLikeStatuses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

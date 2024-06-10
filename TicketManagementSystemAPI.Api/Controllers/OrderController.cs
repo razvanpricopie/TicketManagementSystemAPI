@@ -4,11 +4,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
+using TicketManagementSystemAPI.Application.Contracts.Infrastructure;
 using TicketManagementSystemAPI.Application.Features.Orders.Commands.CreateOrder;
 using TicketManagementSystemAPI.Application.Features.Orders.Queries.GetOrderDetail;
 using TicketManagementSystemAPI.Application.Features.Orders.Queries.GetOrdersList;
 using TicketManagementSystemAPI.Application.Features.Orders.Queries.GetUserOrderList;
+using TicketManagementSystemAPI.Application.Models.StripePayment;
 
 namespace TicketManagementSystemAPI.Api.Controllers
 {
@@ -16,10 +19,12 @@ namespace TicketManagementSystemAPI.Api.Controllers
     public class OrderController : Controller
     {
         private readonly IMediator _mediator;
+        private readonly IStripeService _stripeService;
 
-        public OrderController(IMediator mediator)
+        public OrderController(IMediator mediator, IStripeService stripeService)
         {
             _mediator = mediator;
+            _stripeService = stripeService;
         }
 
         [Authorize(Roles = "Admin")]
@@ -60,10 +65,31 @@ namespace TicketManagementSystemAPI.Api.Controllers
         public async Task<ActionResult<List<UserOrderListVm>>> GetAllUserOrders(Guid userId)
         {
             GetUserOrdersListQuery getUserOrdersListQuery = new GetUserOrdersListQuery() { UserId = userId };
-            
+
             List<UserOrderListVm> userOrders = await _mediator.Send(getUserOrdersListQuery);
 
             return Ok(userOrders);
+        }
+
+
+        [Authorize(Roles = "User")]
+        [HttpPost("createCheckoutSession", Name = "CreateCheckoutSession")]
+        public async Task<ActionResult<CheckoutOrderResponse>> CreateCheckoutSession([FromBody] CheckoutOrderRequest checkoutOrderRequest)
+        {
+            CheckoutOrderResponse checkoutOrderResponse = await _stripeService.CheckoutOrderResponse(checkoutOrderRequest);
+
+            return Ok(checkoutOrderResponse);
+        }
+
+        [HttpPost("webHook", Name = "WebHook")]
+        public async Task<ActionResult<CheckoutOrderResponse>> WebHook()
+        {
+            var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
+            var stripeSignatureHeader = Request.Headers["Stripe-Signature"];
+
+            await _stripeService.WebHook(json, stripeSignatureHeader);
+
+            return Ok();
         }
     }
 }

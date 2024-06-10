@@ -9,6 +9,13 @@ namespace TicketManagementSystemAPI.Application.Contracts.Persistence
     public interface IEventRepository : IAsyncRepository<Event>
     {
         Task<bool> IsEventNameAndDateUnique(string name, DateTime eventDate, Guid? eventId = null);
+        Task<IReadOnlyList<Event>> GetUserFavouriteEventsByLikeStatus(Guid userId, bool isLiked);
+        Task<EventLikeStatus> GetUserLikeEventStatusByUserAndEventIds(Guid userId, Guid eventId);
+        Task<EventLikeStatus> GetUserLikeEventStatusById(Guid id);
+        Task CreateUserLikeEventStatus(EventLikeStatus like);
+        Task DeleteUserLikeEventStatus(EventLikeStatus like);
+        Task<bool> IsUserAlreadyRatedEvent(Guid userId, Guid eventId);
+        Task<IReadOnlyList<EventLikeStatus>> ListFiveRandomEventLikeStatusesAsync();
         Task<IReadOnlyList<Event>> ListBySqlQueryAsync(string query);
 
     }

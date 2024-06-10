@@ -104,7 +104,7 @@ namespace TicketManagementSystemAPI.OpenAI.Services
 
                 promptBuilder.AppendLine($"This is the error: {errorMessage}");
                 promptBuilder.AppendLine();
-                promptBuilder.AppendLine($"I want you to fix this and generate a correct query");
+                promptBuilder.AppendLine($"Fix it and generate a correct one");
                 userPrompt = promptBuilder.ToString();
             }
 
@@ -137,14 +137,14 @@ namespace TicketManagementSystemAPI.OpenAI.Services
             }
             catch (Exception ex)
             {
-                return await GenerateEventsBasedOnSqlQuery(openAIApi, systemBasedPrompt, systemPromptWithConvertedData, userPrompt, sqlQueriesAsChoiceList.ToString(), ex.Message);
+                return await GenerateEventsBasedOnSqlQuery(openAIApi, systemBasedPrompt, systemPromptWithConvertedData, userPrompt, sqlQueriesAsChoiceList.Choices[0].ToString(), ex.Message);
             }
 
             if (eventBasedOnGeneratedQuery.Count == 0)
             {
                 errorMessage = "No events found based on the generated query. Try a different approach based on all provided informations.";
 
-                return await GenerateEventsBasedOnSqlQuery(openAIApi, systemBasedPrompt, systemPromptWithConvertedData, userPrompt, sqlQueriesAsChoiceList.ToString(), errorMessage);
+                return await GenerateEventsBasedOnSqlQuery(openAIApi, systemBasedPrompt, systemPromptWithConvertedData, userPrompt, sqlQueriesAsChoiceList.Choices[0].ToString(), errorMessage);
             }
 
             return eventBasedOnGeneratedQuery;
@@ -157,7 +157,7 @@ namespace TicketManagementSystemAPI.OpenAI.Services
             promptBuilder.AppendLine("Please return only sql query, no others charachters.");
             promptBuilder.AppendLine("You won't use SQL aliases, keep columns name as given.");
             promptBuilder.AppendLine("Given the table structure, definitions, some real data and user prompt.");
-            promptBuilder.AppendLine("You have to include all entity's columns. If one to one relationship, include only foreign keys.");
+            promptBuilder.AppendLine("You have to include all entity's columns. If one to one relationship, include only foreign keys. If many-to-many relationship, doesn't include the column");
 
             return promptBuilder.ToString();
         }
@@ -227,6 +227,26 @@ namespace TicketManagementSystemAPI.OpenAI.Services
             foreach (var ticket in fiveRandomTickets)
             {
                 promptBuilder.AppendLine($"{ticket.TicketId} - {ticket.EventId} - {ticket.OrderId} - {ticket.Quantity}");
+            }
+
+            promptBuilder.AppendLine();
+            promptBuilder.AppendLine();
+
+            promptBuilder.AppendLine(typeof(EventLikeStatus).Name + " table name: [TicketManagementSystemDb].[dbo].[Tickets]");
+            promptBuilder.AppendLine(typeof(EventLikeStatus).Name + " entity structure:");
+            var eventLikeStatusProperties = typeof(EventLikeStatus).GetProperties();
+            foreach (var property in eventLikeStatusProperties)
+            {
+                promptBuilder.AppendLine($"{property.Name}: {property.PropertyType.Name}");
+            }
+
+            promptBuilder.AppendLine();
+            promptBuilder.AppendLine("This is a list of five random " + typeof(EventLikeStatus).Name + " rows:");
+            List<EventLikeStatus> fiveRandomEventLikeStatuses = (await _eventRepository.ListFiveRandomEventLikeStatusesAsync()).ToList();
+
+            foreach (var eventLikeStatus in fiveRandomEventLikeStatuses)
+            {
+                promptBuilder.AppendLine($"{eventLikeStatus.Id} - {eventLikeStatus.UserId} - {eventLikeStatus.EventId} - {eventLikeStatus.IsLiked}");
             }
 
             promptBuilder.AppendLine();

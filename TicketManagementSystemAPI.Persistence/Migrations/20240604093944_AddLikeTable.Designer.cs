@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TicketManagementSystemAPI.Persistence;
 
@@ -11,9 +12,11 @@ using TicketManagementSystemAPI.Persistence;
 namespace TicketManagementSystemAPI.Persistence.Migrations
 {
     [DbContext(typeof(TicketManagementSystemDbContext))]
-    partial class TicketManagementSystemDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240604093944_AddLikeTable")]
+    partial class AddLikeTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -138,7 +141,7 @@ namespace TicketManagementSystemAPI.Persistence.Migrations
                             Artist = "John Egbert",
                             CategoryId = new Guid("b0788d2f-8003-43c1-92a4-edc76a7c5dde"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Date = new DateTime(2024, 12, 4, 16, 12, 53, 845, DateTimeKind.Local).AddTicks(6635),
+                            Date = new DateTime(2024, 12, 4, 12, 39, 44, 772, DateTimeKind.Local).AddTicks(6918),
                             Description = "Join John for his farwell tour across 15 continents. John really needs no introduction since he has already mesmerized the world with his banjo.",
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "John Egbert Live",
@@ -150,7 +153,7 @@ namespace TicketManagementSystemAPI.Persistence.Migrations
                             Artist = "Michael Johnson",
                             CategoryId = new Guid("b0788d2f-8003-43c1-92a4-edc76a7c5dde"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Date = new DateTime(2025, 3, 4, 16, 12, 53, 845, DateTimeKind.Local).AddTicks(6697),
+                            Date = new DateTime(2025, 3, 4, 12, 39, 44, 772, DateTimeKind.Local).AddTicks(6977),
                             Description = "Michael Johnson doesn't need an introduction. His 25 concert across the globe last year were seen by thousands. Can we add you to the list?",
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "The State of Affairs: Michael Live!",
@@ -162,7 +165,7 @@ namespace TicketManagementSystemAPI.Persistence.Migrations
                             Artist = "DJ 'The Mike'",
                             CategoryId = new Guid("b0788d2f-8003-43c1-92a4-edc76a7c5dde"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Date = new DateTime(2024, 10, 4, 16, 12, 53, 845, DateTimeKind.Local).AddTicks(6706),
+                            Date = new DateTime(2024, 10, 4, 12, 39, 44, 772, DateTimeKind.Local).AddTicks(6986),
                             Description = "DJs from all over the world will compete in this epic battle for eternal fame.",
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Clash of the DJs",
@@ -174,7 +177,7 @@ namespace TicketManagementSystemAPI.Persistence.Migrations
                             Artist = "Manuel Santinonisi",
                             CategoryId = new Guid("b0788d2f-8003-43c1-92a4-edc76a7c5dde"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Date = new DateTime(2024, 10, 4, 16, 12, 53, 845, DateTimeKind.Local).AddTicks(6714),
+                            Date = new DateTime(2024, 10, 4, 12, 39, 44, 772, DateTimeKind.Local).AddTicks(6997),
                             Description = "Get on the hype of Spanish Guitar concerts with Manuel.",
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Spanish guitar hits with Manuel",
@@ -186,7 +189,7 @@ namespace TicketManagementSystemAPI.Persistence.Migrations
                             Artist = "Many",
                             CategoryId = new Guid("fe98f549-e790-4e9f-aa16-18c2292a2ee9"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Date = new DateTime(2025, 4, 4, 16, 12, 53, 845, DateTimeKind.Local).AddTicks(6722),
+                            Date = new DateTime(2025, 4, 4, 12, 39, 44, 772, DateTimeKind.Local).AddTicks(7005),
                             Description = "The best tech conference in the world",
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Techorama 2021",
@@ -198,7 +201,7 @@ namespace TicketManagementSystemAPI.Persistence.Migrations
                             Artist = "Nick Sailor",
                             CategoryId = new Guid("6313179f-7837-473a-a4d5-a5571b43e6a6"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Date = new DateTime(2025, 2, 4, 16, 12, 53, 845, DateTimeKind.Local).AddTicks(6731),
+                            Date = new DateTime(2025, 2, 4, 12, 39, 44, 772, DateTimeKind.Local).AddTicks(7014),
                             Description = "The critics are over the moon and so will you after you've watched this sing and dance extravaganza written by Nick Sailor, the man from 'My dad and sister'.",
                             LastModifiedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "To the Moon and Back",
@@ -206,9 +209,9 @@ namespace TicketManagementSystemAPI.Persistence.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TicketManagementSystemAPI.Domain.Entities.EventLikeStatus", b =>
+            modelBuilder.Entity("TicketManagementSystemAPI.Domain.Entities.Like", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("LikeId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -221,11 +224,11 @@ namespace TicketManagementSystemAPI.Persistence.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                    b.HasKey("LikeId");
 
                     b.HasIndex("EventId");
 
-                    b.ToTable("EventsLikeStatuses");
+                    b.ToTable("Likes");
                 });
 
             modelBuilder.Entity("TicketManagementSystemAPI.Domain.Entities.Order", b =>
@@ -321,7 +324,7 @@ namespace TicketManagementSystemAPI.Persistence.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("TicketManagementSystemAPI.Domain.Entities.EventLikeStatus", b =>
+            modelBuilder.Entity("TicketManagementSystemAPI.Domain.Entities.Like", b =>
                 {
                     b.HasOne("TicketManagementSystemAPI.Domain.Entities.Event", null)
                         .WithMany("Events")
