@@ -14,6 +14,7 @@ namespace TicketManagementSystemAPI.Application.Features.Categories.Queries.GetC
         public string Artist { get; set; }
         public DateTime Date { get; set; }
         public byte[] Image { get; set; }
+        public string Location { get; set; }
         public Guid CategoryId { get; set; }
     }
 }

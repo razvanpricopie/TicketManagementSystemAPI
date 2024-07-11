@@ -88,8 +88,9 @@ namespace TicketManagementSystemAPI.OpenAI.Services
 
         public async Task<List<OpenAIEventListResponse>> GetTenEventsBasedOnUserLikeStatuses(Guid userId)
         {
-            string userPrompt = $"Based user's event like statuses - user Id: {userId} - and the categories to which the events belong - fetch up to ten events from those categories. Please do not include user's already bought events. You will use 'EventsLikeStatuses' and 'Categories' table in the query";
-            //string userPrompt = $"I want you to fetch up to ten events from same categories, based on what user already liked events. EventsLikeStatuses table contains events liked/disliked by user, and Category contains all categories. Do not include user's already bought events. Do this for userId - ${userId}";
+            string userPrompt = $"Based user's event like statuses - user Id: {userId} - " +
+                $"and the categories to which the events belong - fetch up to ten events from those categories. " +
+                $"Please do not include user's already bought events. You will use 'EventsLikeStatuses' and 'Categories' table in the query";
 
             string systemPrompt = CreateSystemBasePrompt();
             string systemPromptWithConvertedData = CreateSystemPromptWithConvertedData(true).Result;
@@ -101,9 +102,9 @@ namespace TicketManagementSystemAPI.OpenAI.Services
             return _mapper.Map<List<OpenAIEventListResponse>>(eventBasedOnGeneratedQuery);
         }
 
-        public async Task<List<OpenAIEventListResponse>> GetTenEventsBasedOnOtherUsersLikeStatuses(Guid userId)
+        public async Task<List<OpenAIEventListResponse>> GetTenEventsBasedOnOtherUsersLikeStatuses()
         {
-            string userPrompt = $"Based other users' event like statuses and the categories to which the events belong - fetch up to ten events from those categories. Please do not include liked events or already bought events of userId - ${userId}. You will use 'EventsLikeStatuses' and 'Categories' table in the query";
+            string userPrompt = $"Based other users' event like statuses and the categories to which the events belong - fetch up to ten events from those categories. You will use 'EventsLikeStatuses' and 'Categories' table in the query";
 
             string systemPrompt = CreateSystemBasePrompt();
             string systemPromptWithConvertedData = CreateSystemPromptWithConvertedData(true).Result;
@@ -171,7 +172,8 @@ namespace TicketManagementSystemAPI.OpenAI.Services
             }
             catch (Exception ex)
             {
-                return await GenerateEventsBasedOnSqlQuery(openAIApi, systemBasedPrompt, systemPromptWithConvertedData, userPrompt, sqlQueriesAsChoiceList.Choices[0].ToString(), ex.Message, depth + 1);
+                return await GenerateEventsBasedOnSqlQuery(openAIApi, systemBasedPrompt, systemPromptWithConvertedData,
+                    userPrompt, sqlQueriesAsChoiceList.Choices[0].ToString(), ex.Message, depth + 1);
             }
 
             if (eventBasedOnGeneratedQuery.Count == 0)
@@ -191,7 +193,8 @@ namespace TicketManagementSystemAPI.OpenAI.Services
             promptBuilder.AppendLine("Please return only sql query, no others charachters or sentences");
             promptBuilder.AppendLine("You won't use SQL aliases, keep columns name as given.");
             promptBuilder.AppendLine("Given the table structure, definitions, some real data and user prompt.");
-            promptBuilder.AppendLine("You have to include all entity's columns. If one to one relationship, include only foreign keys. If many-to-many relationship, doesn't include the column");
+            promptBuilder.AppendLine("You have to include all entity's columns. If one to one relationship, include only foreign keys. " +
+                "If many-to-many relationship, doesn't include the column");
 
             return promptBuilder.ToString();
         }
@@ -218,7 +221,8 @@ namespace TicketManagementSystemAPI.OpenAI.Services
 
             foreach (var @event in fiveRanomEvents)
             {
-                promptBuilder.AppendLine($"{@event.EventId} - {@event.Name} - {@event.Price} - {@event.Artist} - {@event.Date} - {@event.Description} - {@event.CategoryId} - {@event.Location} - {@event.Image} - {@event.CreatedBy} - {@event.CreatedDate} - {@event.LastModifiedBy} - {@event.LastModifiedDate}");
+                promptBuilder.AppendLine($"{@event.EventId} - {@event.Name} - {@event.Price} - {@event.Artist} - {@event.Date} - {@event.Description} - {@event.CategoryId} - " +
+                    $"{@event.Location} - {@event.Image} - {@event.CreatedBy} - {@event.CreatedDate} - {@event.LastModifiedBy} - {@event.LastModifiedDate}");
             }
 
             promptBuilder.AppendLine();

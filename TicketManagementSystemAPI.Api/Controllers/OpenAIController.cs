@@ -74,10 +74,10 @@ namespace TicketManagementSystemAPI.Api.Controllers
             return Ok(events);
         }
 
-        [HttpPost("getTenEventsBasedOnOtherUsersLikeStatuses/{userId}", Name = "GetTenEventsBasedOnOtherUsersLikeStatuses")]
-        public async Task<ActionResult<List<OpenAIEventListResponse>>> GetTenEventsBasedOnOtherUsersLikeStatuses(Guid userId)
+        [HttpPost("getTenEventsBasedOnOtherUsersLikeStatuses", Name = "GetTenEventsBasedOnOtherUsersLikeStatuses")]
+        public async Task<ActionResult<List<OpenAIEventListResponse>>> GetTenEventsBasedOnOtherUsersLikeStatuses()
         {
-            List<OpenAIEventListResponse> events = await _openAIService.GetTenEventsBasedOnOtherUsersLikeStatuses(userId);
+            List<OpenAIEventListResponse> events = await _openAIService.GetTenEventsBasedOnOtherUsersLikeStatuses();
 
             return Ok(events);
         }

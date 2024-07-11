@@ -14,6 +14,6 @@ namespace TicketManagementSystemAPI.Application.Contracts.OpenAI
         Task<List<OpenAIEventListResponse>> GetLastTenAddedEvents();
         Task<List<OpenAIEventListResponse>> GetTenEventsBasedOnUserOrders(Guid userId);
         Task<List<OpenAIEventListResponse>> GetTenEventsBasedOnUserLikeStatuses(Guid userId);
-        Task<List<OpenAIEventListResponse>> GetTenEventsBasedOnOtherUsersLikeStatuses(Guid userId);
+        Task<List<OpenAIEventListResponse>> GetTenEventsBasedOnOtherUsersLikeStatuses();
     }
 }
