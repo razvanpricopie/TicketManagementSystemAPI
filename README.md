@@ -1,4 +1,4 @@
-This repository represents the backend application of a System ticketing management type application.
+This repository represents the backend application of a System ticketing management type project.
 
 The application was created as a final project for the dissertation.
 
